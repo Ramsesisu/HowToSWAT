@@ -1,0 +1,7 @@
+name: HowToSWAT
+version: '${project.version}'
+main: org.howtoswat.HowToSWAT
+commands:
+  fly:
+    description: Schaltet den Flug-Modus um.
+    usage: /<command>
