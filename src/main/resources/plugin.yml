@@ -5,3 +5,39 @@ commands:
   fly:
     description: Schaltet den Flug-Modus um.
     usage: /<command>
+  camera:
+    description: Versetzt den Spieler in den Zuschauermodus.
+    usage: /<command>
+  heal:
+    description: Heilt den Spieler.
+    usage: /<command>
+  spawn:
+    description: Setzt den Spawnpunkt des Spielers.
+    usage: /<command>
+  use:
+    description: Verwendet eine Droge.
+    usage: /<command> [drug]
+  equip:
+    description: Stattet den Spieler mit Equipment aus.
+    usage: /<command> [equip]
+  save:
+    description: Speichert die aktuelle Equipkonfiguration.
+    usage: /<command>
+  cooldown:
+    description: Setzt sämtliche Cooldowns zurück.
+    usage: /<command>
+  admins:
+    description: Gibt eine Liste an Admins aus/Fügt sie hinzu.
+    usage: /<command> ([player])
+  builder:
+    description: Gibt eine Liste an Buildern aus/Fügt sie hinzu.
+    usage: /<command> ([player])
+  buildmode:
+    description: Betritt/Verlässt den Buildmode.
+    usage: /<command>
+  baustelle:
+    description: Betritt/Verlässt die Baustelle.
+    usage: /<command>
+  warp:
+    description: Tpt den Spieler zu gegebenem Ort.
+    usage: /<command> [location]

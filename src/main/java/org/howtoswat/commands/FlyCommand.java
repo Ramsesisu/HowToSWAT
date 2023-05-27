@@ -13,7 +13,7 @@ public class FlyCommand implements CommandExecutor {
     private static final String PLAYERSUFFIX = ChatColor.AQUA + " " + ChatColor.BOLD + "F";
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
