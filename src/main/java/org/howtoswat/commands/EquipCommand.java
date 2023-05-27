@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.howtoswat.enums.Equip;
-import org.howtoswat.enums.Guns;
+import org.howtoswat.enums.Gun;
 import org.howtoswat.enums.Items;
 import org.howtoswat.enums.Melee;
 import org.howtoswat.utils.DataUtils;
@@ -92,7 +92,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
 
                             ItemMeta meta = itemstack.getItemMeta();
                             ArrayList<String> lore = new ArrayList<>();
-                            for (Guns gun : Guns.values()) {
+                            for (Gun gun : Gun.values()) {
                                 if (gun.getItem() == item) {
                                     lore.add(ChatColor.translateAlternateColorCodes('&', "&6" + gun.getAmmo() + "&8/&6" + gun.getMaxAmmo()));
                                 }

@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.howtoswat.enums.Guns;
+import org.howtoswat.enums.Gun;
 import org.howtoswat.enums.Melee;
 import org.howtoswat.utils.SoundUtils;
 
@@ -32,7 +32,7 @@ public class DamageHandler implements Listener {
 
             if (event.getDamager() instanceof Arrow) {
                 Entity bullet = event.getDamager();
-                for (Guns gun : Guns.values()) {
+                for (Gun gun : Gun.values()) {
                     if (Objects.equals(gun.getItem().getName(), bullet.getCustomName())) {
                         event.setDamage(gun.getDamage());
                     }

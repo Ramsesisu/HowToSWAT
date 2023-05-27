@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.howtoswat.enums.Guns;
+import org.howtoswat.enums.Gun;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ public class ExplosiveHandler implements Listener {
     @EventHandler
     public static void onRocket(ProjectileHitEvent event) {
         if (event.getEntity() instanceof Arrow) {
-            for (Guns gun : Guns.values()) {
+            for (Gun gun : Gun.values()) {
                 if (Objects.equals(gun.getItem().getName(), event.getEntity().getCustomName())) {
                     if (gun.isExplosive()) {
                         Location loc = event.getHitBlock().getLocation();

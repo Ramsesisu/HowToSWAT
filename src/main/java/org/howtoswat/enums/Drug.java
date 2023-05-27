@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public enum Drugs {
+public enum Drug {
     KOKAIN(Arrays.asList("kokain", "koks"), Arrays.asList(new PotionEffect(PotionEffectType.ABSORPTION, 3000, 4), new PotionEffect(PotionEffectType.REGENERATION, 320, 0), new PotionEffect(PotionEffectType.SPEED, 200, 1))),
     MARIHUANA(Arrays.asList("marihuana", "gras"), Arrays.asList(new PotionEffect(PotionEffectType.ABSORPTION, 5000, 3), new PotionEffect(PotionEffectType.REGENERATION, 400, 1))),
     METHAMPHETAMIN(Arrays.asList("methamphetamin", "meth"), Arrays.asList(new PotionEffect(PotionEffectType.ABSORPTION, 4400, 4), new PotionEffect(PotionEffectType.REGENERATION, 320, 1), new PotionEffect(PotionEffectType.SPEED, 200, 1), new PotionEffect(PotionEffectType.NIGHT_VISION, 320, 0))),
@@ -16,7 +16,7 @@ public enum Drugs {
     private final List<String> names;
     private final List<PotionEffect> effects;
 
-    Drugs(List<String> names, List<PotionEffect> effects) {
+    Drug(List<String> names, List<PotionEffect> effects) {
         this.names = names;
         this.effects = effects;
     }

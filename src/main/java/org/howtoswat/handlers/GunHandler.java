@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.howtoswat.commands.BuildmodeCommand;
-import org.howtoswat.enums.Guns;
+import org.howtoswat.enums.Gun;
 import org.howtoswat.utils.SoundUtils;
 
 import java.util.Collections;
@@ -31,65 +31,67 @@ public class GunHandler implements Listener {
             Player player = event.getPlayer();
 
             if (player.getGameMode() == GameMode.SURVIVAL) {
-                for (Guns gun : Guns.values()) {
+                for (Gun gun : Gun.values()) {
                     ItemStack item = event.getItem();
-                    if (gun.getItem().getItem().getType() == item.getType()) {
-                        cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
-                        if (cooldowns.containsKey(player.getUniqueId())) {
-                            long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
-                            if (secondsLeft > 0L) {
-                                player.sendActionBar(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen...");
+                    if (item != null) {
+                        if (gun.getItem().getItem().getType() == item.getType()) {
+                            cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
+                            if (cooldowns.containsKey(player.getUniqueId())) {
+                                long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
+                                if (secondsLeft > 0L) {
+                                    player.sendActionBar(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen...");
+                                    return;
+                                }
+                            }
+                            cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+
+                            String[] lore = Objects.requireNonNull(item.getLore()).toArray()[0].toString().replace(ChatColor.GOLD + "", "").replace(ChatColor.DARK_GRAY + "", "").split("/");
+                            int ammo = Integer.parseInt(lore[0]);
+                            int maxammo = Integer.parseInt(lore[1]);
+
+                            if (ammo == 0) {
+                                SoundUtils.playLocalSound(player, Sound.ITEM_FLINTANDSTEEL_USE, 1F, 0F);
+
+                                ammo = gun.getAmmo();
+                                if (maxammo != 0) {
+                                    if (maxammo - ammo < 0) {
+                                        ammo = maxammo;
+                                    }
+
+                                    String ammos = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + (maxammo - ammo));
+                                    item.setLore(Collections.singletonList(ammos));
+                                    player.sendActionBar(ammos);
+
+                                    cooldowntimes.put(player.getUniqueId(), gun.getReloadCooldown());
+                                }
                                 return;
                             }
-                        }
-                        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
 
-                        String[] lore = Objects.requireNonNull(item.getLore()).toArray()[0].toString().replace(ChatColor.GOLD + "", "").replace(ChatColor.DARK_GRAY + "", "").split("/");
-                        int ammo = Integer.parseInt(lore[0]);
-                        int maxammo = Integer.parseInt(lore[1]);
-
-                        if (ammo == 0) {
-                            SoundUtils.playLocalSound(player, Sound.ITEM_FLINTANDSTEEL_USE, 1F, 0F);
-
-                            ammo = gun.getAmmo();
-                            if (maxammo != 0) {
-                                if (maxammo - ammo < 0) {
-                                    ammo = maxammo;
-                                }
-
-                                String ammos = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + (maxammo - ammo));
-                                item.setLore(Collections.singletonList(ammos));
-                                player.sendActionBar(ammos);
-
-                                cooldowntimes.put(player.getUniqueId(), gun.getReloadCooldown());
+                            SoundUtils.playLocalSound(player, Sound.ITEM_FLINTANDSTEEL_USE, 0.5F, 0F);
+                            if (gun.isExplosive()) {
+                                SoundUtils.playGlobalSound(player.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 100, gun.getPitch());
+                            } else {
+                                SoundUtils.playGlobalSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100, gun.getPitch());
                             }
-                            return;
+
+                            Arrow bullet = player.launchProjectile(Arrow.class, player.getLocation().getDirection());
+                            bullet.setGravity(false);
+                            bullet.setVelocity(bullet.getVelocity().multiply(gun.getVelocity()));
+                            bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+
+                            bullet.setCustomName(gun.getItem().getName());
+
+                            String ammos = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + maxammo);
+                            item.setLore(Collections.singletonList(ammos));
+                            player.sendActionBar(ammos);
+
+                            Location origin = player.getEyeLocation().add(0, 0.2, 0);
+                            Vector direction = origin.getDirection();
+                            Location loc = origin.add(direction);
+                            player.spawnParticle(Particle.SMOKE_NORMAL, loc.add(direction.clone().multiply(0.5D)), 1, 0.05D, 0.05D, 0.05D, 0.0D);
+
+                            cooldowntimes.put(player.getUniqueId(), gun.getCooldown());
                         }
-
-                        SoundUtils.playLocalSound(player, Sound.ITEM_FLINTANDSTEEL_USE, 0.5F, 0F);
-                        if (gun.isExplosive()) {
-                            SoundUtils.playGlobalSound(player.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 100, gun.getPitch());
-                        } else {
-                            SoundUtils.playGlobalSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100, gun.getPitch());
-                        }
-
-                        Arrow bullet = player.launchProjectile(Arrow.class, player.getLocation().getDirection());
-                        bullet.setGravity(false);
-                        bullet.setVelocity(bullet.getVelocity().multiply(gun.getVelocity()));
-                        bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-
-                        bullet.setCustomName(gun.getItem().getName());
-
-                        String ammos = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + maxammo);
-                        item.setLore(Collections.singletonList(ammos));
-                        player.sendActionBar(ammos);
-
-                        Location origin = player.getEyeLocation().add(0, 0.2, 0);
-                        Vector direction = origin.getDirection();
-                        Location loc = origin.add(direction);
-                        player.spawnParticle(Particle.SMOKE_NORMAL, loc.add(direction.clone().multiply(0.5D)), 1, 0.05D, 0.05D, 0.05D, 0.0D);
-
-                        cooldowntimes.put(player.getUniqueId(), gun.getCooldown());
                     }
                 }
             }
@@ -101,7 +103,7 @@ public class GunHandler implements Listener {
         Player player = event.getPlayer();
 
         if (!BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
-            for (Guns gun : Guns.values()) {
+            for (Gun gun : Gun.values()) {
                 ItemStack item = event.getItemDrop().getItemStack();
                 if (gun.getItem().getItem().getType() == item.getType()) {
                     cooldowns.put(player.getUniqueId(), System.currentTimeMillis());

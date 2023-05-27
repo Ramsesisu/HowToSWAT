@@ -89,5 +89,6 @@ public final class HowToSWAT extends JavaPlugin {
         pluginManager.registerEvents(new ItemHandler(), this);
         pluginManager.registerEvents(new ExplosiveHandler(), this);
         pluginManager.registerEvents(new KillHandler(), this);
+        pluginManager.registerEvents(new GrenadeHandler(), this);
     }
 }

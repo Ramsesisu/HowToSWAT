@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.howtoswat.enums.NaviPoints;
+import org.howtoswat.enums.NaviPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
             Player player = ((Player) sender).getPlayer();
 
             if (args.length > 0) {
-                for (NaviPoints point : NaviPoints.values()) {
+                for (NaviPoint point : NaviPoint.values()) {
                     if (Objects.equals(point.getName().replace(" ", "-"), args[0])) {
                         player.teleport(point.getLocation(player.getWorld()));
                         return true;
@@ -57,7 +57,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
             Location loc = ((Player) sender).getLocation();
             targets.add(loc.getBlockX() + "/" + loc.getBlockY() + "/" + loc.getBlockZ());
         }
-        for (NaviPoints point : NaviPoints.values()) targets.add(point.getName().replace(" ", "-"));
+        for (NaviPoint point : NaviPoint.values()) targets.add(point.getName().replace(" ", "-"));
         for (Player player : Bukkit.getServer().getOnlinePlayers()) targets.add(player.getName());
         if (args.length == 1) for (String target : targets) if (target.toUpperCase().startsWith(args[0].toUpperCase())) list.add(target);
         return list;

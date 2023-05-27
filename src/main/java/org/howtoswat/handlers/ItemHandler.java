@@ -9,12 +9,12 @@ import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.howtoswat.commands.BuildmodeCommand;
-import org.howtoswat.enums.Guns;
+import org.howtoswat.enums.Gun;
 import org.howtoswat.enums.Items;
 
 public class ItemHandler implements Listener {
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public static void onDrop(PlayerDropItemEvent event) {
         if (!BuildmodeCommand.buildmode.contains(event.getPlayer().getUniqueId())) {
             for (Items item : Items.values()) {
@@ -29,7 +29,7 @@ public class ItemHandler implements Listener {
 
     @EventHandler
     public static void onDamage(PlayerItemDamageEvent event) {
-        for (Guns gun : Guns.values()) if (gun.getItem().getItem().getType() == event.getItem().getType()) event.setCancelled(true);
+        for (Gun gun : Gun.values()) if (gun.getItem().getItem().getType() == event.getItem().getType()) event.setCancelled(true);
     }
 
     @EventHandler

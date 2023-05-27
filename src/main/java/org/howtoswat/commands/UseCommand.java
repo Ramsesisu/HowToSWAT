@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-import org.howtoswat.enums.Drugs;
+import org.howtoswat.enums.Drug;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class UseCommand implements CommandExecutor, TabCompleter {
             if (args.length == 0) {
                 player.sendMessage(PREFIX + "Du hast keine Droge angeben!");
             } else {
-                for (Drugs drug : Drugs.values()) {
+                for (Drug drug : Drug.values()) {
                     if (drug.getNames().contains(args[0].toLowerCase())) {
                         for (PotionEffect potionEffect : drug.getEffects()) player.addPotionEffect(potionEffect);
 

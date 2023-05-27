@@ -3,7 +3,7 @@ package org.howtoswat.enums;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public enum NaviPoints {
+public enum NaviPoint {
     ALTSTADT("Altstadt", 255, 69, 592),
     ANGELSCHEIN("Angelschein", -343, 63, 60),
     ANWALTSKANZLEI("Anwaltskanzlei", -132, 71, -501),
@@ -139,7 +139,7 @@ public enum NaviPoints {
 
     private final int z;
 
-    NaviPoints(String name, int x, int y, int z) {
+    NaviPoint(String name, int x, int y, int z) {
         this.name = name;
         this.x = x;
         this.y = y;

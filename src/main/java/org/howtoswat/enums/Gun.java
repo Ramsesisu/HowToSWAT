@@ -1,6 +1,6 @@
 package org.howtoswat.enums;
 
-public enum Guns {
+public enum Gun {
     TS19(Items.TS19, 7, 4.5, 21, 400, 400, 4000, 0.7F, false),
     SCATTER3(Items.SCATTER3, 5, 5, 25, 500, 300, 3000, 1.0F, false),
     P69(Items.P69, 10, 4, 15, 150, 1500, 4500, 0.5F, false),
@@ -18,7 +18,7 @@ public enum Guns {
     private final float pitch;
     private final boolean explosive;
 
-    Guns(Items item, double damage, double velocity, int ammo, int maxammo, int cooldown, int reloadcooldown, float pitch, boolean explosive) {
+    Gun(Items item, double damage, double velocity, int ammo, int maxammo, int cooldown, int reloadcooldown, float pitch, boolean explosive) {
         this.item = item;
         this.damage = damage;
         this.velocity = velocity;
