@@ -78,8 +78,16 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
 
                 List<String> checklist1 = new ArrayList<>();
                 List<String> checklist2 = new ArrayList<>();
-                for (int i = 0; i < 9; i++) for (Items item : Items.values()) if (Objects.equals(item.getName(), equiplist.get(i).toString())) if (item != Items.AIR) checklist1.add(item.getName());
-                for (Items item : equip.getContents()) if (item != Items.AIR) checklist2.add(item.getName());
+                for (int i = 0; i < 9; i++) {
+                    for (Items item : Items.values()) {
+                        if (Objects.equals(item.getName(), equiplist.get(i).toString())) {
+                            if (item != Items.AIR) checklist1.add(item.getName());
+                        }
+                    }
+                }
+                for (Items item : equip.getContents()) {
+                    if (item != Items.AIR) checklist2.add(item.getName());
+                }
 
                 if (checklist1.size() != checklist2.size()) {
                     equiplist = equipstandard;
@@ -101,6 +109,9 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                                 if (melee.getItem() == item) {
                                     lore.add(ChatColor.translateAlternateColorCodes('&', "&6" + melee.getDurability() + "&8/&6" + melee.getDurability()));
                                 }
+                            }
+                            if (Items.FLAMMENWERFER == item) {
+                                lore.add(ChatColor.translateAlternateColorCodes('&', "&6500&8/&6500"));
                             }
                             if (!lore.isEmpty()) {
                                 meta.setLore(lore);

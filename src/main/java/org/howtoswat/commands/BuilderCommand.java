@@ -23,7 +23,7 @@ public class BuilderCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (player.isOp()) {
+            if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
                 if (args.length > 0) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
                     String uuid = offlinePlayer.getUniqueId().toString();

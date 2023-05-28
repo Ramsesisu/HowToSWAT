@@ -99,6 +99,8 @@ public class DamageHandler implements Listener {
                                 player.damage(melee.getDamage());
                             }
 
+                            KillHandler.lastdamage.put(player.getUniqueId(), melee.getItem().getName());
+
                             cooldowntimes.put(player.getUniqueId(), melee.getCooldown());
                         }
                     }

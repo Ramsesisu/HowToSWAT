@@ -26,4 +26,14 @@ public class AdminUtils {
         for (Object builder : HowToSWAT.builder) builders.add(builder.toString());
         return builders;
     }
+
+    public static boolean isVerified(String uuid) {
+        return getVerfied().contains(uuid);
+    }
+
+    public static List<String> getVerfied() {
+        List<String> verified = new ArrayList<>();
+        for (Object verify : HowToSWAT.verifies) verified.add(verify.toString());
+        return verified;
+    }
 }

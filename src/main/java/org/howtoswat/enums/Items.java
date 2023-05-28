@@ -9,32 +9,34 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public enum Items {
-    AIR("air", new ItemStack(Material.AIR), false),
-    ELYTRA("elytra", getElytra(), false),
-    LKEV("lkev", getLKev(), false),
-    SKEV("skev", getSKev(), false),
-    SPRENGGUERTEL("sprenggürtel", getSprengguertel(), false),
-    SCHILD("schild", getSchild(), false),
-    FLASHES("flashes", getFlashes(), true),
-    TS19("ts19", getTS19(), false),
-    SCATTER3("scatter3", getScatter3(), false),
-    P69("p69", getP69(), false),
-    VIPER9("viper9", getViper9(), false),
-    EXTENSO18("extenso18", getExtenso18(), false),
-    ALPHA7("alpha7", getAlpha7(), false),
-    MESSER("messer", getMesser(), false),
-    BASEBALLSCHLAEGER("baseballschläger", getBaseballschlaeger(), false),
-    TAZER("tazer", getTazer(), false),
-    FLAMMI("flammenwerfer", getFlammenwerfer(), false);
+    AIR("air", new ItemStack(Material.AIR), false, false),
+    ELYTRA("elytra", getElytra(), false, false),
+    LKEV("lkev", getLKev(), false, false),
+    SKEV("skev", getSKev(), false, false),
+    SPRENGGUERTEL("sprenggürtel", getSprengguertel(), false, true),
+    SCHILD("schild", getSchild(), false, false),
+    FLASHES("flashes", getFlashes(), true, false),
+    TS19("ts19", getTS19(), false, false),
+    SCATTER3("scatter3", getScatter3(), false, false),
+    P69("p69", getP69(), false, false),
+    VIPER9("viper9", getViper9(), false, false),
+    EXTENSO18("extenso18", getExtenso18(), false, false),
+    ALPHA7("alpha7", getAlpha7(), false, true),
+    MESSER("messer", getMesser(), false, false),
+    BASEBALLSCHLAEGER("baseballschläger", getBaseballschlaeger(), false, false),
+    TAZER("tazer", getTazer(), false, false),
+    FLAMMENWERFER("flammenwerfer", getFlammenwerfer(), false, false);
 
     private final String name;
     private final ItemStack content;
     private final boolean droppable;
+    private final boolean verify;
 
-    Items(String name, ItemStack content, boolean droppable) {
+    Items(String name, ItemStack content, boolean droppable, boolean verify) {
         this.name = name;
         this.content = content;
         this.droppable = droppable;
+        this.verify = verify;
     }
 
     public String getName() {
@@ -46,6 +48,9 @@ public enum Items {
     }
     public boolean isDroppable() {
         return droppable;
+    }
+    public boolean needsVerify() {
+        return verify;
     }
 
 

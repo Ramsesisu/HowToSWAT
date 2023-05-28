@@ -25,6 +25,10 @@ public class CameraCommand implements CommandExecutor {
 
                 player.sendMessage(PREFIX + "Du hast den Zuschauermodus beendet.");
             } else {
+                String name = player.getPlayerListName();
+                if (name.contains(FlyCommand.SUFFIX.replace(" ", ""))) {
+                    player.setPlayerListName(name.substring(0, name.length() - FlyCommand.SUFFIX.length()));
+                }
                 player.setGameMode(GameMode.SPECTATOR);
 
                 player.sendMessage(PREFIX + "Du bist nun im Zuschauermodus.");

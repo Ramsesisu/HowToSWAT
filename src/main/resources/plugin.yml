@@ -41,3 +41,24 @@ commands:
   warp:
     description: Tpt den Spieler zu gegebenem Ort.
     usage: /<command> [location]
+  navi:
+    description: Zeigt eine Route zu gegebenem Ort an.
+    usage: /<command> [location]
+  sprenggürtel:
+    description: Zündet einen angezogenen Sprenggürtel.
+    usage: /<command> [timer]
+  bombe:
+    description: Legt pro Spieler eine Bombe.
+    usage: /<command>
+  annehmen:
+    description: Nimmt eine Anfrage an.
+    usage: /<command>
+  ablehnen:
+    description: Lehnt eine Anfrage ab.
+    usage: /<command>
+  verify:
+    description: Verifiziert einen Spieler.
+    usage: /<command> [player]
+  requestverify:
+    description: Stellt eine Verifizierungsanfrage.
+    usage: /<command> [player]

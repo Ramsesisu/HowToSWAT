@@ -40,6 +40,8 @@ public class KillHandler implements Listener {
         String message = ChatColor.GRAY + "" + ChatColor.BOLD + player.getName() + ChatColor.WHITE + " ist gestorben.";
         List<String> messages;
         String name = ChatColor.GRAY + "" + ChatColor.BOLD + player.getName() + ChatColor.WHITE;
+        String killer;
+        String item;
         switch (player.getLastDamageCause().getCause()) {
             case BLOCK_EXPLOSION:
             case WITHER:
@@ -75,8 +77,8 @@ public class KillHandler implements Listener {
                 message = messages.get(new Random().nextInt(messages.size()));
                 break;
             case PROJECTILE:
-                String killer = ChatColor.GRAY + player.getKiller().getName() + ChatColor.WHITE;
-                String item = ChatColor.GRAY + "Unbekannt" + ChatColor.WHITE;
+                killer = ChatColor.GRAY + player.getKiller().getName() + ChatColor.WHITE;
+                item = ChatColor.GRAY + "Unbekannt" + ChatColor.WHITE;
                 if (lastdamage.containsKey(player.getUniqueId())) item = ChatColor.GRAY + StringUtils.capitalize(lastdamage.get(player.getUniqueId())) + ChatColor.WHITE;
                 messages = Arrays.asList(
                         name + " wurde von " + killer + " mit einer " + item + " niedergeschossen.",
@@ -95,6 +97,19 @@ public class KillHandler implements Listener {
                         killer + " missbrauchte " + name + " als seine " + item + "-Zielscheibe.",
                         name + " lernte durch " + killer + "'s " + item + " in den Himmel zu fliegen.",
                         killer + " verwandelte " + name + "'s Kopf mit einer " + item + " in grobes Hack.");
+                message = messages.get(new Random().nextInt(messages.size()));
+                break;
+            case ENTITY_ATTACK:
+                killer = ChatColor.GRAY + player.getKiller().getName() + ChatColor.WHITE;
+                item = ChatColor.GRAY + "Unbekannt" + ChatColor.WHITE;
+                if (lastdamage.containsKey(player.getUniqueId())) item = ChatColor.GRAY + StringUtils.capitalize(lastdamage.get(player.getUniqueId())) + ChatColor.WHITE;
+                messages = Arrays.asList(
+                        name + " wurde von " + killer + " mit einem " + item + " niedergestreckt.",
+                        name + " wurde von " + killer + " mit einem " + item + " erstochen.",
+                        name + " wurde von " + killer + "'s " + item + " erschlagen.",
+                        killer + " rammte " + name + " sein " + item + " in den Bauch.",
+                        killer + " zerteilte " + name + " mit einem " + item + " in Stücke.",
+                        name + " wurde von " + killer + " mit einem überdimensionalen " + item + " vermöbelt.");
                 message = messages.get(new Random().nextInt(messages.size()));
                 break;
         }

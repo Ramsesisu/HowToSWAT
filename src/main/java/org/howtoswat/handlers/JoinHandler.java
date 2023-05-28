@@ -1,9 +1,6 @@
 package org.howtoswat.handlers;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,8 +8,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
+import org.howtoswat.commands.BombeCommand;
 import org.howtoswat.commands.BuildmodeCommand;
 import org.howtoswat.commands.EquipCommand;
+import org.howtoswat.commands.NaviCommand;
 import org.howtoswat.utils.AdminUtils;
 
 import java.util.*;
@@ -57,10 +56,22 @@ public class JoinHandler implements Listener {
     public static void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        BuildmodeCommand.buildmode.remove(player.getUniqueId());
+        if (NaviCommand.navitask.containsKey(player.getUniqueId())) {
+            NaviCommand.navitask.get(player.getUniqueId()).cancel();
+
+            NaviCommand.navitask.remove(player.getUniqueId());
+        }
+
+        if (BombeCommand.bombs.containsKey(player.getUniqueId())) {
+            Location bombloc = BombeCommand.bombs.get(player.getUniqueId());
+            bombloc.getWorld().getBlockAt(bombloc).setType(Material.AIR);
+
+            BombeCommand.bombs.remove(player.getUniqueId());
+        }
 
         if (KillHandler.deadplayers.contains(player.getUniqueId())) {
             if (BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
+                player.setPlayerListName(player.getPlayerListName() + BuildmodeCommand.SUFFIX);
                 player.setGameMode(GameMode.CREATIVE);
             } else {
                 player.setGameMode(GameMode.SURVIVAL);
@@ -70,6 +81,8 @@ public class JoinHandler implements Listener {
 
             KillHandler.deadplayers.remove(player.getUniqueId());
         }
+
+        BuildmodeCommand.buildmode.remove(player.getUniqueId());
 
         if (playertasks.containsKey(player.getUniqueId())) {
             for (BukkitTask task : playertasks.get(player.getUniqueId())) task.cancel();

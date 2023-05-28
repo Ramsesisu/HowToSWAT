@@ -1,8 +1,6 @@
 package org.howtoswat;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +22,7 @@ public final class HowToSWAT extends JavaPlugin {
 
     public static final List<Object> admins = new ArrayList<>();
     public static final List<Object> builder = new ArrayList<>();
+    public static final List<Object> verifies = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -39,7 +38,11 @@ public final class HowToSWAT extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        for (Location bombloc : BombeCommand.bombs.values()) {
+            bombloc.getWorld().getBlockAt(bombloc).setType(Material.AIR);
+        }
+    }
 
     private void loadWorlds() {
         new WorldCreator("Training").createWorld();
@@ -50,6 +53,8 @@ public final class HowToSWAT extends JavaPlugin {
     public static YamlConfiguration adminconfig;
     public static File buildersave;
     public static YamlConfiguration builderconfig;
+    public static File verifysave;
+    public static YamlConfiguration verifyconfig;
 
     private void loadData() {
         adminsave = new File("data" + File.separator + "server" + File.separator + "admins.yml");
@@ -61,6 +66,11 @@ public final class HowToSWAT extends JavaPlugin {
         builderconfig = YamlConfiguration.loadConfiguration(buildersave);
         DataUtils.checkFile(buildersave, builderconfig, "builder", builder);
         DataUtils.setValues(builderconfig, "builder", builder);
+
+        verifysave = new File("data" + File.separator + "server" + File.separator + "verified.yml");
+        verifyconfig = YamlConfiguration.loadConfiguration(verifysave);
+        DataUtils.checkFile(verifysave, verifyconfig, "verify", verifies);
+        DataUtils.setValues(verifyconfig, "verify", verifies);
     }
 
     private void registerCommands() {
@@ -77,6 +87,13 @@ public final class HowToSWAT extends JavaPlugin {
         getCommand("buildmode").setExecutor(new BuildmodeCommand());
         getCommand("baustelle").setExecutor(new BaustelleCommand());
         getCommand("warp").setExecutor(new WarpCommand());
+        getCommand("navi").setExecutor(new NaviCommand());
+        getCommand("sprenggürtel").setExecutor(new SprengguertelCommand());
+        getCommand("bombe").setExecutor(new BombeCommand());
+        getCommand("annehmen").setExecutor(new AnnehmenCommand());
+        getCommand("ablehnen").setExecutor(new AblehnenCommand());
+        getCommand("verify").setExecutor(new VerifyCommand());
+        getCommand("requestverify").setExecutor(new RequestVerifyCommand());
     }
 
     private void registerHandlers() {

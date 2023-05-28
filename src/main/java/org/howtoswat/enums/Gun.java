@@ -1,12 +1,12 @@
 package org.howtoswat.enums;
 
 public enum Gun {
-    TS19(Items.TS19, 7, 4.5, 21, 400, 400, 4000, 0.7F, false),
-    SCATTER3(Items.SCATTER3, 5, 5, 25, 500, 300, 3000, 1.0F, false),
-    P69(Items.P69, 10, 4, 15, 150, 1500, 4500, 0.5F, false),
-    VIPER9(Items.VIPER9, 16, 6, 5, 30, 5000, 10000, 0.0F, false),
-    EXTENSO18(Items.EXTENSO18, 12, 5.5, 5, 50, 3000, 6000, 0.55F, false),
-    ALPHA7(Items.ALPHA7, 12, 3, 1, 1, 3000,75000, 1.0F, true);
+    TS19(Items.TS19, 7, 3.5, 21, 400, 400, 4000, 0.7F, false),
+    SCATTER3(Items.SCATTER3, 4, 5, 25, 500, 300, 3000, 1.0F, false),
+    P69(Items.P69, 10, 3, 15, 150, 1500, 4500, 0.5F, false),
+    VIPER9(Items.VIPER9, 16, 5, 5, 30, 5000, 10000, 0.0F, false),
+    EXTENSO18(Items.EXTENSO18, 12, 4.5, 5, 50, 3000, 6000, 0.55F, false),
+    ALPHA7(Items.ALPHA7, 12, 2.5, 1, 1, 3000,75000, 1.0F, true);
 
     private final Items item;
     private final double damage;

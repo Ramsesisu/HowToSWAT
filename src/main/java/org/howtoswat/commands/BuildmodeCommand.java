@@ -16,6 +16,7 @@ import java.util.UUID;
 public class BuildmodeCommand implements CommandExecutor {
 
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "" + ChatColor.BOLD + "BUILD" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
+    public static final String SUFFIX = ChatColor.GREEN + " " + ChatColor.BOLD + "B";
 
     public static final List<UUID> buildmode = new ArrayList<>();
 
@@ -26,6 +27,8 @@ public class BuildmodeCommand implements CommandExecutor {
 
             if (AdminUtils.isBuilder(player.getUniqueId().toString())) {
                 if (Objects.equals(player.getWorld().getName(), "Baustelle") || AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                    String name = player.getPlayerListName();
+
                     if (buildmode.contains(player.getUniqueId())) {
                         buildmode.remove(player.getUniqueId());
 
@@ -34,12 +37,19 @@ public class BuildmodeCommand implements CommandExecutor {
                         }
                         player.setInvulnerable(false);
 
+                        player.setPlayerListName(name.substring(0, name.length() - 8));
+
                         player.sendMessage(PREFIX + "Du hast den Buildmode verlassen.");
                     } else {
                         buildmode.add(player.getUniqueId());
 
                         player.setGameMode(GameMode.CREATIVE);
                         player.setInvulnerable(true);
+
+                        if (name.contains(FlyCommand.SUFFIX.replace(" ", ""))) {
+                            name = name.substring(0, name.length() - FlyCommand.SUFFIX.length());
+                        }
+                        player.setPlayerListName(name + SUFFIX);
 
                         player.sendMessage(PREFIX + "Du hast den Buildmode betreten.");
                     }

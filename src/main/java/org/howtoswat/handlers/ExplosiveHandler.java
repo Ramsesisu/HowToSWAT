@@ -3,7 +3,7 @@ package org.howtoswat.handlers;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -22,27 +22,30 @@ public class ExplosiveHandler implements Listener {
             for (Gun gun : Gun.values()) {
                 if (Objects.equals(gun.getItem().getName(), event.getEntity().getCustomName())) {
                     if (gun.isExplosive()) {
-                        Location loc = event.getHitBlock().getLocation();
-
-                        for (Entity entity : loc.getNearbyEntities(5, 5, 5)) {
-                            if (entity instanceof Player) {
-                                Player player = ((Player) entity).getPlayer();
-
-                                player.setLastDamageCause(new EntityDamageEvent(event.getEntity(), EntityDamageEvent.DamageCause.BLOCK_EXPLOSION, 0));
-                                if (!player.isInvulnerable()) player.setHealth(0);
-                            }
-                        }
-
-                        loc.createExplosion(12, false, false);
-
-                        for (Entity entity : loc.getNearbyEntities(20, 20, 20)) {
-                            if (entity instanceof Player) {
-                                double distance = loc.distance(entity.getLocation());
-                                ((Player) entity).getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.WITHER, (int) (1400 / distance), (int) (20 / distance)));
-                            }
-                        }
+                        explode(event.getEntity(), event.getHitBlock().getLocation(), 10);
                     }
                 }
+            }
+        }
+    }
+    public static void explode(Entity damagee, Location loc, int power) {
+        int range = power / 2;
+        for (Entity entity : loc.getNearbyEntities(range, range, range)) {
+            if (entity instanceof LivingEntity) {
+                LivingEntity living = (LivingEntity) entity;
+
+                living.setLastDamageCause(new EntityDamageEvent(damagee, EntityDamageEvent.DamageCause.BLOCK_EXPLOSION, 0));
+                if (!living.isInvulnerable()) living.setHealth(0);
+            }
+        }
+
+        loc.createExplosion(power, false, false);
+
+        range = power * 2;
+        for (Entity entity : loc.getNearbyEntities(range, range, range)) {
+            if (entity instanceof LivingEntity) {
+                double distance = loc.distance(entity.getLocation());
+                ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.WITHER, (int) (1400 / distance), (int) (20 / distance)));
             }
         }
     }

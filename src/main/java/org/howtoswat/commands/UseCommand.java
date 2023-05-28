@@ -57,14 +57,14 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(PREFIX + "Die Droge " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " wurde nicht gefunden!");
             }
         }
-
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        String[] targets = {"Schmerzmittel", "Kokain", "Marihuana", "Methamphetamin"};
+        List<String> targets = new ArrayList<>();
+        for (Drug drug : Drug.values()) targets.add(StringUtils.capitalize(drug.getNames().get(0)));
         if (args.length == 1) for (String target : targets) if (target.toUpperCase().startsWith(args[0].toUpperCase())) list.add(target);
         return list;
     }

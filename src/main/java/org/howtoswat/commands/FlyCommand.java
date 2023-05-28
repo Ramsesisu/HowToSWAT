@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class FlyCommand implements CommandExecutor {
 
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "FLY" + ChatColor.DARK_GRAY + "] " + ChatColor.AQUA;
-    private static final String PLAYERSUFFIX = ChatColor.AQUA + " " + ChatColor.BOLD + "F";
+    public static final String SUFFIX = ChatColor.AQUA + " " + ChatColor.BOLD + "F";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
@@ -29,7 +29,7 @@ public class FlyCommand implements CommandExecutor {
                 } else {
                     player.setAllowFlight(true);
 
-                    player.setPlayerListName(name + PLAYERSUFFIX);
+                    player.setPlayerListName(name + SUFFIX);
 
                     player.sendMessage(PREFIX + "Flugmodus wurde " + ChatColor.GREEN + "aktiviert" + ChatColor.AQUA + ".");
                 }

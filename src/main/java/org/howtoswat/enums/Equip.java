@@ -11,7 +11,7 @@ public enum Equip {
     BALLAS("ballas", ChatColor.translateAlternateColorCodes('&', "&8&l[&5Ballas&8&l]"), Arrays.asList(Items.LKEV, Items.TS19, Items.EXTENSO18, Items.MESSER, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR)),
     TERROR("terror", ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l]"), Arrays.asList(Items.SPRENGGUERTEL, Items.TS19, Items.ALPHA7, Items.MESSER, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR)),
     ZIVILIST("zivilist", ChatColor.translateAlternateColorCodes('&', "&8&l[&7Zivi&8&l]"), Arrays.asList(Items.SCATTER3, Items.P69, Items.BASEBALLSCHLAEGER, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR)),
-    FLAMMENWERFER("flammenwerfer", ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l]"), Arrays.asList(Items.LKEV, Items.FLAMMI, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR)),
+    FLAMMENWERFER("flammenwerfer", ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l]"), Arrays.asList(Items.LKEV, Items.FLAMMENWERFER, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR)),
     ELYTRA("elytra", ChatColor.translateAlternateColorCodes('&', "&8&l[&3Elytra&8&l]"), Arrays.asList(Items.ELYTRA, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR)),
     NONE("none", "", Arrays.asList(Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR, Items.AIR));
 

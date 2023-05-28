@@ -8,7 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -60,6 +63,30 @@ public class GrenadeHandler implements Listener {
                     }, 60L);
 
                     cooldowntimes.put(player.getUniqueId(), grenade.getCooldown());
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onClick(PlayerInteractEvent event) {
+        Action action = event.getAction();
+        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+            Player player = event.getPlayer();
+
+            ItemStack item = event.getItem();
+            for (Grenade grenade : Grenade.values()) {
+                if (grenade.getItem().getItem().getType() == item.getType()) {
+                    cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
+                    if (cooldowns.containsKey(player.getUniqueId())) {
+                        long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
+                        if (secondsLeft > 0L) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                    player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
+                    onDrop(new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), item.asOne())));
                 }
             }
         }
