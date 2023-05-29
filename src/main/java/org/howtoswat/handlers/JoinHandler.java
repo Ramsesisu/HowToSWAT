@@ -8,13 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.howtoswat.commands.BombeCommand;
-import org.howtoswat.commands.BuildmodeCommand;
-import org.howtoswat.commands.EquipCommand;
-import org.howtoswat.commands.NaviCommand;
+import org.howtoswat.commands.*;
 import org.howtoswat.utils.AdminUtils;
 
 import java.util.*;
+
+import static org.howtoswat.HowToSWAT.PLUGIN;
 
 public class JoinHandler implements Listener {
 
@@ -26,6 +25,11 @@ public class JoinHandler implements Listener {
     public static void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         event.setJoinMessage(PREFIX + player.getName() + ChatColor.YELLOW + " ist nun " + ChatColor.GREEN + "online" + ChatColor.YELLOW + ".");
+
+        Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
+            player.sendMessage(ChatColor.GRAY + "Willkommen auf " + ChatColor.BLUE + "How" + ChatColor.DARK_RED + "To" + ChatColor.GOLD + "SWAT" + ChatColor.DARK_GRAY + ".eu" + ChatColor.GRAY + ", einem inoffiziellen UnicaCity-Trainingsserver mit universellen Features!");
+            player.sendMessage(ChatColor.GRAY + "Plugin: " + ChatColor.DARK_GRAY + "rqmses" + ChatColor.GRAY + ", Server: " + ChatColor.DARK_GRAY + "Melerkhin" + ChatColor.GRAY + ", Map: " + ChatColor.DARK_GRAY + "UC-Bauteam");
+        }, 20L);
 
         playertasks.putIfAbsent(player.getUniqueId(), new ArrayList<>());
 
@@ -86,6 +90,13 @@ public class JoinHandler implements Listener {
 
         if (playertasks.containsKey(player.getUniqueId())) {
             for (BukkitTask task : playertasks.get(player.getUniqueId())) task.cancel();
+        }
+
+        if (CarCommand.minecarts.containsKey(player.getUniqueId())) {
+            CarCommand.minecarts.remove(player.getUniqueId()).remove();
+            if (CarCommand.cartasks.get(player.getUniqueId()) != null) {
+                CarCommand.cartasks.get(player.getUniqueId()).cancel();
+            }
         }
 
         event.setQuitMessage(PREFIX + player.getName() + ChatColor.YELLOW + " ist nun " + ChatColor.RED + "offline" + ChatColor.YELLOW + ".");

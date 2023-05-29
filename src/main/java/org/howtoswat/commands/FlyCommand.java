@@ -25,13 +25,13 @@ public class FlyCommand implements CommandExecutor {
 
                     player.setPlayerListName(name.substring(0, name.length() - 8));
 
-                    player.sendMessage(PREFIX + "Flugmodus wurde " + ChatColor.RED + "deaktiviert" + ChatColor.AQUA + ".");
+                    player.sendMessage(PREFIX + "Flug-Modus wurde " + ChatColor.RED + "deaktiviert" + ChatColor.AQUA + ".");
                 } else {
                     player.setAllowFlight(true);
 
                     player.setPlayerListName(name + SUFFIX);
 
-                    player.sendMessage(PREFIX + "Flugmodus wurde " + ChatColor.GREEN + "aktiviert" + ChatColor.AQUA + ".");
+                    player.sendMessage(PREFIX + "Flug-Modus wurde " + ChatColor.GREEN + "aktiviert" + ChatColor.AQUA + ".");
                 }
             }
         }

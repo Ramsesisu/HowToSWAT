@@ -44,6 +44,9 @@ commands:
   navi:
     description: Zeigt eine Route zu gegebenem Ort an.
     usage: /<command> [location]
+  luftlinie:
+    description: Ändert den Navityp um.
+    usage: /<command>
   sprenggürtel:
     description: Zündet einen angezogenen Sprenggürtel.
     usage: /<command> [timer]
@@ -62,3 +65,21 @@ commands:
   requestverify:
     description: Stellt eine Verifizierungsanfrage.
     usage: /<command> [player]
+  ban:
+    description: Bannt einen Spieler.
+    usage: /<command> [player] [duration] [reason...]
+  kick:
+    description: Kickt einen Spieler.
+    usage: /<command> [player] [reason...]
+  run:
+    description: Lässt einen Spieler einen Befehl ausführen.
+    usage: /<command> [player] [command...]
+  duty:
+    description: Betritt den Admin-Modus.
+    usage: /<command>
+  help:
+    description: Gibt eine Liste an Befehlen aus.
+    usage: /<command>
+  car:
+    description: Steuert das Auto eines Spielers.
+    usage: /<command> ([find|start])

@@ -25,9 +25,9 @@ public class RequestVerifyCommand implements CommandExecutor {
                         VerifyUtils.addRequest(player, admin, VerifyCommand.PREFIX + ChatColor.DARK_GRAY + player.getName() + ChatColor.GRAY + " möchte verifiziert werden.", () -> VerifyCommand.verify(player, admin));
                     }
                 }
-            }
 
-            player.sendMessage(VerifyUtils.PREFIX + "Deine Verifizierungs-Anfrage wurde gestellt.");
+                player.sendMessage(VerifyUtils.PREFIX + "Deine Verifizierungs-Anfrage wurde gestellt.");
+            }
         }
         return true;
     }

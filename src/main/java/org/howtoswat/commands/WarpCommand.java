@@ -48,7 +48,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 if (arg.length == 3) {
                     List<Double> coords = new ArrayList<>();
                     for (String coord : arg) coords.add(Double.valueOf(coord));
-                    player.teleport(new Location(player.getWorld(), coords.get(0), coords.get(1), coords.get(2)));
+                    player.teleport(new Location(player.getWorld(), coords.get(0) + 0.5, coords.get(1), coords.get(2) + 0.5));
 
                     player.sendMessage(PREFIX + "Du wurdest zu Koordinate " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert.");
                     return true;

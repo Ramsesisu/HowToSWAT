@@ -2,6 +2,7 @@ package org.howtoswat;
 
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Minecart;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.howtoswat.commands.*;
@@ -41,6 +42,10 @@ public final class HowToSWAT extends JavaPlugin {
     public void onDisable() {
         for (Location bombloc : BombeCommand.bombs.values()) {
             bombloc.getWorld().getBlockAt(bombloc).setType(Material.AIR);
+        }
+
+        for (Minecart minecart : CarCommand.minecarts.values()) {
+            minecart.remove();
         }
     }
 
@@ -88,12 +93,19 @@ public final class HowToSWAT extends JavaPlugin {
         getCommand("baustelle").setExecutor(new BaustelleCommand());
         getCommand("warp").setExecutor(new WarpCommand());
         getCommand("navi").setExecutor(new NaviCommand());
+        getCommand("luftlinie").setExecutor(new LuftlinieCommand());
         getCommand("sprenggürtel").setExecutor(new SprengguertelCommand());
         getCommand("bombe").setExecutor(new BombeCommand());
         getCommand("annehmen").setExecutor(new AnnehmenCommand());
         getCommand("ablehnen").setExecutor(new AblehnenCommand());
         getCommand("verify").setExecutor(new VerifyCommand());
         getCommand("requestverify").setExecutor(new RequestVerifyCommand());
+        getCommand("ban").setExecutor(new BanCommand());
+        getCommand("kick").setExecutor(new KickCommand());
+        getCommand("run").setExecutor(new RunCommand());
+        getCommand("duty").setExecutor(new DutyCommand());
+        getCommand("help").setExecutor(new HelpCommand());
+        getCommand("car").setExecutor(new CarCommand());
     }
 
     private void registerHandlers() {
@@ -107,5 +119,7 @@ public final class HowToSWAT extends JavaPlugin {
         pluginManager.registerEvents(new ExplosiveHandler(), this);
         pluginManager.registerEvents(new KillHandler(), this);
         pluginManager.registerEvents(new GrenadeHandler(), this);
+        pluginManager.registerEvents(new CommandHandler(), this);
+        pluginManager.registerEvents(new CarHandler(), this);
     }
 }

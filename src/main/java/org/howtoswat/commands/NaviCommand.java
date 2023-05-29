@@ -24,6 +24,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "" + ChatColor.BOLD + "NAVI" + ChatColor.DARK_GRAY + "] " + ChatColor.YELLOW;
     public static final HashMap<UUID, BukkitTask> navitask = new HashMap<>();
+    public static final HashMap<UUID, Boolean> navitype = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
@@ -50,7 +51,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                     if (arg.length == 3) {
                         List<Double> coords = new ArrayList<>();
                         for (String coord : arg) coords.add(Double.valueOf(coord));
-                        loc = new Location(player.getWorld(), coords.get(0), coords.get(1), coords.get(2));
+                        loc = new Location(player.getWorld(), coords.get(0) + 0.5, coords.get(1), coords.get(2) + 0.5);
 
                         player.sendMessage(PREFIX + "Dir wird nun die Route zu Koordinate " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " angezeigt.");
                     }
@@ -66,6 +67,8 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
 
+                    navitype.putIfAbsent(player.getUniqueId(), false);
+
                     Location finalLoc = loc;
                     BukkitRunnable navi = new BukkitRunnable() {
                         @Override
@@ -79,13 +82,11 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                                 player.spawnParticle(Particle.REDSTONE, temploc.subtract(direction.clone().multiply(0.75)), 1, 0.05, 0.05, 0.05, 0);
                             }
 
-                        /*
-                        if (navitype.get(player.getName())) {
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + ((int) Math.floor(Math.sqrt(Math.pow(player.getLocation().getX() - finalLoc.getX(), 2) + Math.pow(player.getLocation().getZ() - finalLoc.getZ(), 2)))) + "m&6 bis zum Ziel.")));
-                        } else {
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + ((int) Math.floor(Math.sqrt(Math.pow(player.getLocation().getX() - finalLoc.getX(), 2) + Math.pow(player.getLocation().getY() - finalLoc.getY(), 2) + Math.pow(player.getLocation().getZ() - finalLoc.getZ(), 2)))) + "m&6 bis zum Ziel.")));
-                        }
-                         */
+                            if (navitype.get(player.getUniqueId())) {
+                                player.sendActionBar(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + ((int) Math.floor(Math.sqrt(Math.pow(player.getLocation().getX() - finalLoc.getX(), 2) + Math.pow(player.getLocation().getZ() - finalLoc.getZ(), 2)))) + "m&6 bis zum Ziel."));
+                            } else {
+                                player.sendActionBar(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + ((int) Math.floor(Math.sqrt(Math.pow(player.getLocation().getX() - finalLoc.getX(), 2) + Math.pow(player.getLocation().getY() - finalLoc.getY(), 2) + Math.pow(player.getLocation().getZ() - finalLoc.getZ(), 2)))) + "m&6 bis zum Ziel."));
+                            }
                         }
                     };
 

@@ -66,7 +66,7 @@ public class VerifyUtils {
 
     public static void verifyMessage(Player player) {
         if (!AdminUtils.isVerified(player.getUniqueId().toString())) {
-            player.sendMessage(VerifyCommand.PREFIX + "Du bist noch nicht verifiziert. Beantrage deinen Verify bei einem Admin:");
+            player.sendMessage(VerifyCommand.PREFIX + "Du bist noch nicht verifiziert. Beantrage deinen Verify bei einem aktiven Admin:");
             player.sendMessage(getVerifyMessage());
         }
     }
