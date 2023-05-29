@@ -36,6 +36,8 @@ public class KickCommand implements CommandExecutor {
                         kicked.kickPlayer("Du wurdest gekickt!\nGrund: " + reason);
                     }
                 }
+            } else {
+                player.sendMessage(PREFIX + "Du bist kein Admin!");
             }
         }
         return true;

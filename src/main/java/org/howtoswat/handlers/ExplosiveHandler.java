@@ -1,9 +1,7 @@
 package org.howtoswat.handlers;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -35,17 +33,37 @@ public class ExplosiveHandler implements Listener {
                 LivingEntity living = (LivingEntity) entity;
 
                 living.setLastDamageCause(new EntityDamageEvent(damagee, EntityDamageEvent.DamageCause.BLOCK_EXPLOSION, 0));
-                if (!living.isInvulnerable()) living.setHealth(0);
+                if (!living.isInvulnerable()) {
+                    if (living instanceof Player) {
+                        if (GunHandler.hasSpawnschutz(((Player) living).getPlayer())) continue;
+                    }
+                    living.setHealth(0);
+                }
             }
         }
 
         loc.createExplosion(power, false, false);
 
         range = power * 2;
-        for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-            if (entity instanceof LivingEntity) {
-                double distance = loc.distance(entity.getLocation());
-                ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.WITHER, (int) (1400 / distance), (int) (20 / distance)));
+        for (LivingEntity living : loc.getNearbyLivingEntities(range)) {
+            double distance = loc.distance(living.getLocation());
+            if (living instanceof Player) {
+                if (GunHandler.hasSpawnschutz(((Player) living).getPlayer())) continue;
+            }
+            living.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, (int) (1400 / distance), (int) (20 / distance)));
+        }
+    }
+
+    @EventHandler
+    public static void onExplode(EntityDamageEvent event) {
+        if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
+            if (event.getEntity() instanceof Player) {
+                if (GunHandler.hasSpawnschutz(((Player) event.getEntity()).getPlayer())) {
+                    event.setCancelled(true);
+                }
+            }
+            if (event.getEntity() instanceof Item) {
+                event.setCancelled(true);
             }
         }
     }

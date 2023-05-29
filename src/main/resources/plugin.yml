@@ -83,3 +83,9 @@ commands:
   car:
     description: Steuert das Auto eines Spielers.
     usage: /<command> ([find|start])
+  disablecommand:
+    description: (De-)Aktiviert einen Server-Befehl.
+    usage: /<command> [label]
+  disableitem:
+    description: (De-)Aktiviert ein Item.
+    usage: /<command> [item]

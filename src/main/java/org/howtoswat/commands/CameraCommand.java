@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.howtoswat.handlers.KillHandler;
 
 public class CameraCommand implements CommandExecutor {
 
@@ -16,22 +17,24 @@ public class CameraCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (player.getGameMode() == GameMode.SPECTATOR) {
-                if (BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
-                    player.setGameMode(GameMode.CREATIVE);
+            if (!KillHandler.deadplayers.contains(player.getUniqueId())) {
+                if (player.getGameMode() == GameMode.SPECTATOR) {
+                    if (BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
+                        player.setGameMode(GameMode.CREATIVE);
+                    } else {
+                        player.setGameMode(GameMode.SURVIVAL);
+                    }
+
+                    player.sendMessage(PREFIX + "Du hast den Zuschauermodus beendet.");
                 } else {
-                    player.setGameMode(GameMode.SURVIVAL);
-                }
+                    String name = player.getPlayerListName();
+                    if (name.contains(FlyCommand.SUFFIX.replace(" ", ""))) {
+                        player.setPlayerListName(name.substring(0, name.length() - FlyCommand.SUFFIX.length()));
+                    }
+                    player.setGameMode(GameMode.SPECTATOR);
 
-                player.sendMessage(PREFIX + "Du hast den Zuschauermodus beendet.");
-            } else {
-                String name = player.getPlayerListName();
-                if (name.contains(FlyCommand.SUFFIX.replace(" ", ""))) {
-                    player.setPlayerListName(name.substring(0, name.length() - FlyCommand.SUFFIX.length()));
+                    player.sendMessage(PREFIX + "Du bist nun im Zuschauermodus.");
                 }
-                player.setGameMode(GameMode.SPECTATOR);
-
-                player.sendMessage(PREFIX + "Du bist nun im Zuschauermodus.");
             }
         }
         return true;

@@ -1,10 +1,13 @@
 package org.howtoswat.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.howtoswat.handlers.DamageHandler;
+import org.howtoswat.handlers.GrenadeHandler;
 import org.howtoswat.handlers.GunHandler;
 import org.howtoswat.utils.AdminUtils;
 
@@ -18,9 +21,16 @@ public class CoolDownCommand implements CommandExecutor {
             Player player = ((Player) sender).getPlayer();
 
             if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                if (args.length > 0) {
+                    if (Bukkit.getServer().getPlayer(args[0]) != null) {
+                        player = Bukkit.getServer().getPlayer(args[0]);
+                    }
+                }
                 EquipCommand.cooldowns.put(player.getUniqueId(), 0L);
                 UseCommand.cooldowns.put(player.getUniqueId(), 0L);
-                GunHandler.cooldowns.put(player.getUniqueId(), 0L);
+                GunHandler.cooldowntimes.put(player.getUniqueId(), 0);
+                GrenadeHandler.cooldowntimes.put(player.getUniqueId(), 0);
+                DamageHandler.cooldowntimes.put(player.getUniqueId(), 0);
 
                 player.sendMessage(PREFIX + "Deine Cooldowns wurden zurückgesetzt.");
             } else {

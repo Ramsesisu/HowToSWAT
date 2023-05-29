@@ -32,6 +32,7 @@ public class KillHandler implements Listener {
     @EventHandler
     public static void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
+        player.getInventory().clear();
 
         Location loc = player.getLocation();
 
@@ -96,7 +97,8 @@ public class KillHandler implements Listener {
                         name + " versagte peinlichst gegen " + killer + " und einer " + item + ".",
                         killer + " missbrauchte " + name + " als seine " + item + "-Zielscheibe.",
                         name + " lernte durch " + killer + "'s " + item + " in den Himmel zu fliegen.",
-                        killer + " verwandelte " + name + "'s Kopf mit einer " + item + " in grobes Hack.");
+                        killer + " verwandelte " + name + "'s Kopf mit einer " + item + " in grobes Hack.",
+                        name + " hat den Wilden Westen mit " + killer + " und einer " + item + " nicht überlebt.");
                 message = messages.get(new Random().nextInt(messages.size()));
                 break;
             case ENTITY_ATTACK:
@@ -152,6 +154,9 @@ public class KillHandler implements Listener {
                     }
 
                     for (PotionEffect effect : player.getActivePotionEffects()) player.removePotionEffect(effect.getType());
+
+                    deadplayers.remove(player.getUniqueId());
+                    GunHandler.startSpawnschutz(player);
 
                     cancel();
                 }

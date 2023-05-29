@@ -43,6 +43,8 @@ public class RunCommand implements CommandExecutor {
                 } else {
                     player.sendMessage(PREFIX + "Gib einen Spieler an!");
                 }
+            } else {
+                player.sendMessage(PREFIX + "Du bist kein Admin!");
             }
         }
         return true;

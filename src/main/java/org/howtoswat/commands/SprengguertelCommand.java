@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.howtoswat.enums.Items;
 import org.howtoswat.enums.Kevlar;
 import org.howtoswat.handlers.ExplosiveHandler;
+import org.howtoswat.handlers.GunHandler;
 import org.howtoswat.utils.AdminUtils;
 import org.howtoswat.utils.VerifyUtils;
 
@@ -26,11 +27,16 @@ public class SprengguertelCommand implements CommandExecutor {
 
             ItemStack chestplate = player.getInventory().getChestplate();
             if (chestplate != null) {
-                for (Items check : Items.values()) {
-                    if (check.getItem().getType() == chestplate.getType()) {
-                        if (check.needsVerify()) {
+                for (Items items : Items.values()) {
+                    if (items.getItem().getType() == chestplate.getType()) {
+                        if (items.needsVerify()) {
                             if (!AdminUtils.isVerified(player.getUniqueId().toString())) {
                                 VerifyUtils.verifyMessage(player);
+                                return true;
+                            }
+                        }
+                        if (DisableItemCommand.disabled.contains(items)) {
+                            if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
                                 return true;
                             }
                         }
@@ -40,6 +46,8 @@ public class SprengguertelCommand implements CommandExecutor {
             if (args.length > 0) {
                 if (!BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
                     if (player.getInventory().getChestplate() != null) {
+                        if (GunHandler.hasSpawnschutz(player)) GunHandler.endSpawnschutz(player);
+
                         Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
                             for (Kevlar kevlar : Kevlar.values()) {
                                 if (player.getInventory().getChestplate() != null) {

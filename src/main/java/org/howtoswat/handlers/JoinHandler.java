@@ -1,5 +1,8 @@
 package org.howtoswat.handlers;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -20,6 +23,7 @@ public class JoinHandler implements Listener {
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "" + ChatColor.BOLD + "JOIN" + ChatColor.DARK_GRAY + "] " + ChatColor.GOLD;
 
     public static HashMap<UUID, List<BukkitTask>> playertasks = new HashMap<>();
+    public static List<UUID> spawnschutz = new ArrayList<>();
 
     @EventHandler
     public static void onJoin(PlayerJoinEvent event) {
@@ -27,9 +31,17 @@ public class JoinHandler implements Listener {
         event.setJoinMessage(PREFIX + player.getName() + ChatColor.YELLOW + " ist nun " + ChatColor.GREEN + "online" + ChatColor.YELLOW + ".");
 
         Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
+            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5F, 1F);
+
             player.sendMessage(ChatColor.GRAY + "Willkommen auf " + ChatColor.BLUE + "How" + ChatColor.DARK_RED + "To" + ChatColor.GOLD + "SWAT" + ChatColor.DARK_GRAY + ".eu" + ChatColor.GRAY + ", einem inoffiziellen UnicaCity-Trainingsserver mit universellen Features!");
             player.sendMessage(ChatColor.GRAY + "Plugin: " + ChatColor.DARK_GRAY + "rqmses" + ChatColor.GRAY + ", Server: " + ChatColor.DARK_GRAY + "Melerkhin" + ChatColor.GRAY + ", Map: " + ChatColor.DARK_GRAY + "UC-Bauteam");
-        }, 20L);
+
+            TextComponent message = new TextComponent (ChatColor.GRAY + "      » " + ChatColor.GOLD + "Leitfaden");
+            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.BLUE + "/help")));
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/help"));
+            player.sendMessage(message);
+            player.sendMessage();
+        }, 10L);
 
         playertasks.putIfAbsent(player.getUniqueId(), new ArrayList<>());
 
@@ -54,11 +66,14 @@ public class JoinHandler implements Listener {
         }
 
         if (EquipCommand.equipments.containsKey(player.getUniqueId())) EquipCommand.equip(player, EquipCommand.equipments.get(player.getUniqueId()));
+
+        GunHandler.startSpawnschutz(player);
     }
 
     @EventHandler
     public static void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        event.setQuitMessage(PREFIX + player.getName() + ChatColor.YELLOW + " ist nun " + ChatColor.RED + "offline" + ChatColor.YELLOW + ".");
 
         if (NaviCommand.navitask.containsKey(player.getUniqueId())) {
             NaviCommand.navitask.get(player.getUniqueId()).cancel();
@@ -89,7 +104,10 @@ public class JoinHandler implements Listener {
         BuildmodeCommand.buildmode.remove(player.getUniqueId());
 
         if (playertasks.containsKey(player.getUniqueId())) {
-            for (BukkitTask task : playertasks.get(player.getUniqueId())) task.cancel();
+            for (BukkitTask task : playertasks.get(player.getUniqueId())) {
+                task.cancel();
+                playertasks.get(player.getUniqueId()).remove(task);
+            }
         }
 
         if (CarCommand.minecarts.containsKey(player.getUniqueId())) {
@@ -98,7 +116,5 @@ public class JoinHandler implements Listener {
                 CarCommand.cartasks.get(player.getUniqueId()).cancel();
             }
         }
-
-        event.setQuitMessage(PREFIX + player.getName() + ChatColor.YELLOW + " ist nun " + ChatColor.RED + "offline" + ChatColor.YELLOW + ".");
     }
 }

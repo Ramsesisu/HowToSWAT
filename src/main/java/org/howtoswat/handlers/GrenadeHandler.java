@@ -16,7 +16,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.howtoswat.commands.BuildmodeCommand;
+import org.howtoswat.commands.DisableItemCommand;
 import org.howtoswat.enums.Grenade;
+import org.howtoswat.enums.Items;
+import org.howtoswat.utils.AdminUtils;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -34,7 +37,13 @@ public class GrenadeHandler implements Listener {
 
         if (!BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
             for (Grenade grenade : Grenade.values()) {
-                if (grenade.getItem().getItem().getType() == event.getItemDrop().getItemStack().getType()) {
+                Items items = grenade.getItem();
+                if (items.getItem().getType() == event.getItemDrop().getItemStack().getType()) {
+                    if (DisableItemCommand.disabled.contains(items)) {
+                        if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                            return;
+                        }
+                    }
                     cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
                     if (cooldowns.containsKey(player.getUniqueId())) {
                         long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
@@ -54,6 +63,7 @@ public class GrenadeHandler implements Listener {
                             if (entity instanceof LivingEntity) {
                                 LivingEntity living = (LivingEntity) entity;
                                 int distance = (int) (Math.ceil(living.getLocation().distance(thrown.getLocation())) / 2);
+                                if (distance < 1) distance = 1;
                                 living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200 / distance, 0));
                                 living.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 400 / distance, 0));
                             }
@@ -75,18 +85,26 @@ public class GrenadeHandler implements Listener {
             Player player = event.getPlayer();
 
             ItemStack item = event.getItem();
-            for (Grenade grenade : Grenade.values()) {
-                if (grenade.getItem().getItem().getType() == item.getType()) {
-                    cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
-                    if (cooldowns.containsKey(player.getUniqueId())) {
-                        long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
-                        if (secondsLeft > 0L) {
-                            event.setCancelled(true);
-                            return;
+            if (item != null) {
+                for (Grenade grenade : Grenade.values()) {
+                    Items items = grenade.getItem();
+                    if (items.getItem().getType() == item.getType()) {
+                        if (DisableItemCommand.disabled.contains(items)) {
+                            if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                return;
+                            }
                         }
+                        cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
+                        if (cooldowns.containsKey(player.getUniqueId())) {
+                            long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
+                            if (secondsLeft > 0L) {
+                                event.setCancelled(true);
+                                return;
+                            }
+                        }
+                        player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
+                        onDrop(new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), item.asOne())));
                     }
-                    player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
-                    onDrop(new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), item.asOne())));
                 }
             }
         }

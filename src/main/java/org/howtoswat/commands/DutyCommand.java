@@ -31,6 +31,8 @@ public class DutyCommand implements CommandExecutor {
 
                     player.sendMessage(PREFIX + "Admin-Modus wurde " + ChatColor.GREEN + "aktiviert" + ChatColor.RED + ".");
                 }
+            } else {
+                player.sendMessage(PREFIX + "Du bist kein Admin!");
             }
         }
         return true;

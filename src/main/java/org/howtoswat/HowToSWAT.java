@@ -106,6 +106,8 @@ public final class HowToSWAT extends JavaPlugin {
         getCommand("duty").setExecutor(new DutyCommand());
         getCommand("help").setExecutor(new HelpCommand());
         getCommand("car").setExecutor(new CarCommand());
+        getCommand("disablecommand").setExecutor(new DisableCommandCommand());
+        getCommand("disableitem").setExecutor(new DisableItemCommand());
     }
 
     private void registerHandlers() {
@@ -123,3 +125,9 @@ public final class HowToSWAT extends JavaPlugin {
         pluginManager.registerEvents(new CarHandler(), this);
     }
 }
+
+                /*
+                    Plan:
+                    - Alpha-Spamschutz
+                    - Tazer
+                 */

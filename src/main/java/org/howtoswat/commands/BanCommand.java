@@ -95,6 +95,8 @@ public class BanCommand implements CommandExecutor {
                         player.sendMessage(ChatColor.DARK_GRAY + "          Bis: " + ChatColor.GRAY + until);
                     }
                 }
+            } else {
+                player.sendMessage(PREFIX + "Du bist kein Admin!");
             }
         }
         return true;

@@ -1,5 +1,6 @@
 package org.howtoswat.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -27,6 +28,18 @@ public class BuildmodeCommand implements CommandExecutor {
 
             if (AdminUtils.isBuilder(player.getUniqueId().toString())) {
                 if (Objects.equals(player.getWorld().getName(), "Baustelle") || AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                    if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                        if (args.length > 0) {
+                            if (Bukkit.getServer().getPlayer(args[0]) != null) {
+                                if (buildmode.contains(Bukkit.getServer().getPlayer(args[0]).getUniqueId())) {
+                                    player.sendMessage(PREFIX + ChatColor.DARK_GRAY + args[0]  + ChatColor.GRAY + " wird aus dem Buildmode entfernt..");
+                                } else {
+                                    player.sendMessage(PREFIX + ChatColor.DARK_GRAY + args[0]  + ChatColor.GRAY + " wird in den Buildmode gesetzt.");
+                                }
+                                player = Bukkit.getServer().getPlayer(args[0]);
+                            }
+                        }
+                    }
                     String name = player.getPlayerListName();
 
                     if (buildmode.contains(player.getUniqueId())) {

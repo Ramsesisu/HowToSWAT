@@ -1,5 +1,7 @@
 package org.howtoswat.handlers;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,14 +11,51 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 import org.howtoswat.commands.BuildmodeCommand;
+import org.howtoswat.commands.DisableItemCommand;
 import org.howtoswat.enums.Gun;
 import org.howtoswat.enums.Items;
+import org.howtoswat.utils.AdminUtils;
 
 public class ItemHandler implements Listener {
+
+    @EventHandler(priority = EventPriority.LOW)
+    public static void onItem(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        for (Items items : Items.values()) {
+            if (event.getItem().getType() == items.getItem().getType()) {
+                if (DisableItemCommand.disabled.contains(items)) {
+                    player.sendMessage(DisableItemCommand.PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " ist deaktiviert!");
+                    if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onKevlar(InventoryClickEvent event) {
+        if (event.getSlot() == 38) {
+            for (Items items : Items.values()) {
+                if (items.getItem().getType() == event.getCursor().getType()) {
+                    if (DisableItemCommand.disabled.contains(items)) {
+                        if (event.getWhoClicked() instanceof Player) {
+                            Player player = (Player) event.getWhoClicked();
+                            player.sendMessage(DisableItemCommand.PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " ist deaktiviert!");
+                            if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                event.setCancelled(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @EventHandler(priority = EventPriority.LOW)
     public static void onDrop(PlayerDropItemEvent event) {

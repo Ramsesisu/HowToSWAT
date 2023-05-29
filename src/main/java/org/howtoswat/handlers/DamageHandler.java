@@ -31,6 +31,11 @@ public class DamageHandler implements Listener {
             Player player = ((Player) event.getEntity()).getPlayer();
 
             if (event.getDamager() instanceof Arrow) {
+                if (GunHandler.hasSpawnschutz(player)) {
+                    event.setCancelled(true);
+                    return;
+                }
+
                 Entity bullet = event.getDamager();
                 for (Gun gun : Gun.values()) {
                     if (Objects.equals(gun.getItem().getName(), bullet.getCustomName())) {
@@ -65,6 +70,12 @@ public class DamageHandler implements Listener {
 
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
+
+                if (GunHandler.hasSpawnschutz(damager)) GunHandler.endSpawnschutz(damager);
+                if (GunHandler.hasSpawnschutz(player)) {
+                    event.setCancelled(true);
+                    return;
+                }
 
                 ItemStack chestplate = player.getInventory().getChestplate();
                 if (chestplate != null) {

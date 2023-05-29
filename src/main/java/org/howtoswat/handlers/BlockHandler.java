@@ -32,9 +32,11 @@ public class BlockHandler implements Listener {
             event.getEntity().remove();
 
             Block block = event.getHitBlock();
-            PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(block.hashCode(), new BlockPosition(block.getX(), block.getY(), block.getZ()), 3);
-            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+            if (block != null) {
+                PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(block.hashCode(), new BlockPosition(block.getX(), block.getY(), block.getZ()), 4);
+                for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                    ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+                }
             }
         }
     }
