@@ -29,6 +29,9 @@ public class FlyCommand implements CommandExecutor {
                 } else {
                     player.setAllowFlight(true);
 
+                    if (name.contains(SUFFIX.replace(" ", ""))) {
+                        name = name.substring(0, name.length() - SUFFIX.length());
+                    }
                     player.setPlayerListName(name + SUFFIX);
 
                     player.sendMessage(PREFIX + "Flug-Modus wurde " + ChatColor.GREEN + "aktiviert" + ChatColor.AQUA + ".");

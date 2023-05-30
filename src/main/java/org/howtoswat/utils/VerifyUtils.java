@@ -16,7 +16,7 @@ import static org.howtoswat.HowToSWAT.PLUGIN;
 
 public class VerifyUtils {
     public static final String PREFIX = org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.DARK_AQUA + "" + org.bukkit.ChatColor.BOLD + "REQUEST" + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.GRAY;
-    public static HashMap<HashMap<UUID, UUID>, Boolean> requests = new HashMap<>();
+    public static final HashMap<HashMap<UUID, UUID>, Boolean> requests = new HashMap<>();
 
     public static void addRequest(Player fromPlayer, Player toPlayer, String message, Runnable runnable) {
         HashMap<UUID, UUID> request = new HashMap<>();
@@ -66,7 +66,7 @@ public class VerifyUtils {
 
     public static void verifyMessage(Player player) {
         if (!AdminUtils.isVerified(player.getUniqueId().toString())) {
-            player.sendMessage(VerifyCommand.PREFIX + "Du bist noch nicht verifiziert. Beantrage deinen Verify bei einem aktiven Admin:");
+            player.sendMessage(VerifyCommand.PREFIX + "Du bist noch nicht verifiziert. Beantrage deinen Verify bei einem Supporter:");
             player.sendMessage(getVerifyMessage());
         }
     }
@@ -86,8 +86,8 @@ public class VerifyUtils {
     }
 
     private static TextComponent getVerifyMessage() {
-        TextComponent message = new TextComponent (net.md_5.bungee.api.ChatColor.GRAY + "          » " + ChatColor.RED + "Verify beantragen");
-        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(net.md_5.bungee.api.ChatColor.AQUA + "/requestverify")));
+        TextComponent message = new TextComponent (ChatColor.GRAY + "          » " + ChatColor.RED + "Verify beantragen");
+        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.AQUA + "/requestverify")));
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/requestverify"));
         return message;
     }

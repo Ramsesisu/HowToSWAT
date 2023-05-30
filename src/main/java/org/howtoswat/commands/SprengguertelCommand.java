@@ -35,9 +35,11 @@ public class SprengguertelCommand implements CommandExecutor {
                                 return true;
                             }
                         }
-                        if (DisableItemCommand.disabled.contains(items)) {
-                            if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
-                                return true;
+                        if (chestplate.getItemMeta().getDisplayName().equals(items.getItem().getItemMeta().getDisplayName())) {
+                            if (DisableItemCommand.disabled.contains(chestplate.getItemMeta().getDisplayName())) {
+                                if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                    return true;
+                                }
                             }
                         }
                     }

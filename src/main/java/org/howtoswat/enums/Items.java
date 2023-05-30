@@ -11,8 +11,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public enum Items {
     AIR("air", new ItemStack(Material.AIR), false, false),
     ELYTRA("elytra", getElytra(), false, false),
-    LKEV("lkev", getLKev(), false, false),
-    SKEV("skev", getSKev(), false, false),
+    LEICHTE_KEVLAR("leichte-kevlar", getLKev(), false, false),
+    SCHWERE_KEVLAR("schwere-kevlar", getSKev(), false, false),
     SPRENGGUERTEL("sprenggürtel", getSprengguertel(), false, true),
     SCHILD("schild", getSchild(), false, false),
     FLASHES("flashes", getFlashes(), true, false),

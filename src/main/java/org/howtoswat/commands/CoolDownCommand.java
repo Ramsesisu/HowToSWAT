@@ -20,7 +20,7 @@ public class CoolDownCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
+            if (AdminUtils.isSupporter(player.getUniqueId().toString())) {
                 if (args.length > 0) {
                     if (Bukkit.getServer().getPlayer(args[0]) != null) {
                         player = Bukkit.getServer().getPlayer(args[0]);
@@ -34,7 +34,7 @@ public class CoolDownCommand implements CommandExecutor {
 
                 player.sendMessage(PREFIX + "Deine Cooldowns wurden zurückgesetzt.");
             } else {
-                player.sendMessage(PREFIX + "Du bist kein Admin!");
+                player.sendMessage(PREFIX + "Du bist kein Supporter!");
             }
         }
         return true;

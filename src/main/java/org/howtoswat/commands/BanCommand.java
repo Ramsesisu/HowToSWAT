@@ -36,7 +36,7 @@ public class BanCommand implements CommandExecutor {
                         for (String uuid : AdminUtils.getAdmins()) {
                             Player admin = Bukkit.getServer().getPlayer(UUID.fromString(uuid));
                             if (admin != null) {
-                                admin.sendMessage(PREFIX + ChatColor.DARK_RED + "" + ChatColor.BOLD + banned.getName() + ChatColor.RED + " wurde von " + ChatColor.DARK_RED + player.getName() + ChatColor.RED + " wieder entbannt.");;
+                                admin.sendMessage(PREFIX + ChatColor.DARK_RED + "" + ChatColor.BOLD + banned.getName() + ChatColor.RED + " wurde von " + ChatColor.DARK_RED + player.getName() + ChatColor.RED + " wieder entbannt.");
                             }
                         }
                     } else {

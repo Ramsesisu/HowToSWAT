@@ -17,7 +17,7 @@ public class KickCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
+            if (AdminUtils.isSupporter(player.getUniqueId().toString())) {
                 if (args.length > 0) {
                     Player kicked = Bukkit.getServer().getPlayer(args[0]);
                     if (kicked != null) {
@@ -37,7 +37,7 @@ public class KickCommand implements CommandExecutor {
                     }
                 }
             } else {
-                player.sendMessage(PREFIX + "Du bist kein Admin!");
+                player.sendMessage(PREFIX + "Du bist kein Supporter!");
             }
         }
         return true;

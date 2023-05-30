@@ -26,6 +26,7 @@ public class ExplosiveHandler implements Listener {
             }
         }
     }
+    @SuppressWarnings("deprecation")
     public static void explode(Entity damagee, Location loc, int power) {
         int range = power / 2;
         for (Entity entity : loc.getNearbyEntities(range, range, range)) {

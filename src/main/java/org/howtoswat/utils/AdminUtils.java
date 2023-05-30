@@ -17,6 +17,16 @@ public class AdminUtils {
         return admins;
     }
 
+    public static boolean isSupporter(String uuid) {
+        return getSupporter().contains(uuid);
+    }
+
+    public static List<String> getSupporter() {
+        List<String> supporters = new ArrayList<>();
+        for (Object supporter : HowToSWAT.supporter) supporters.add(supporter.toString());
+        return supporters;
+    }
+
     public static boolean isBuilder(String uuid) {
         return getBuilder().contains(uuid);
     }

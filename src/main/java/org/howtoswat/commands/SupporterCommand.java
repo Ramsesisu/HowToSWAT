@@ -13,9 +13,9 @@ import org.howtoswat.utils.DataUtils;
 
 import java.util.UUID;
 
-public class AdminsCommand implements CommandExecutor {
+public class SupporterCommand implements CommandExecutor {
 
-    private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "" + ChatColor.BOLD + "ADMIN" + ChatColor.DARK_GRAY + "] " + ChatColor.RED;
+    private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "" + ChatColor.BOLD + "SUPPORTER" + ChatColor.DARK_GRAY + "] " + ChatColor.GOLD;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -23,28 +23,28 @@ public class AdminsCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (player.isOp()) {
+            if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
                 if (args.length > 0) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
                     String uuid = offlinePlayer.getUniqueId().toString();
 
-                    if (AdminUtils.isAdmin(uuid)) {
-                        HowToSWAT.admins.remove(uuid);
+                    if (AdminUtils.isSupporter(uuid)) {
+                        HowToSWAT.supporter.remove(uuid);
 
-                        Bukkit.broadcastMessage(PREFIX + ChatColor.DARK_RED + offlinePlayer.getName() + ChatColor.RED + " wurde als Admin entlassen.");
+                        Bukkit.broadcastMessage(PREFIX + ChatColor.YELLOW + offlinePlayer.getName() + ChatColor.GOLD + " wurde als Supporter entlassen.");
                     } else {
-                        HowToSWAT.admins.add(uuid);
+                        HowToSWAT.supporter.add(uuid);
 
-                        Bukkit.broadcastMessage(PREFIX + ChatColor.DARK_RED + offlinePlayer.getName() + ChatColor.RED + " wurde zum Admin ernannt.");
+                        Bukkit.broadcastMessage(PREFIX + ChatColor.YELLOW + offlinePlayer.getName() + ChatColor.GOLD + " wurde zum Supporter ernannt.");
                     }
 
-                    DataUtils.saveValues(HowToSWAT.adminsave, HowToSWAT.adminconfig, "admins", HowToSWAT.admins);
+                    DataUtils.saveValues(HowToSWAT.supportersave, HowToSWAT.supporterconfig, "supporter", HowToSWAT.supporter);
                     return true;
                 }
             }
 
-            player.sendMessage(PREFIX + "Aktuelle Admins:");
-            for (Object uuid : AdminUtils.getAdmins()) {
+            player.sendMessage(PREFIX + "Aktuelle Supporter:");
+            for (Object uuid : AdminUtils.getSupporter()) {
                 player.sendMessage(ChatColor.DARK_GRAY + "                  - " + ChatColor.GRAY + Bukkit.getOfflinePlayer(UUID.fromString(uuid.toString())).getName());
             }
         }

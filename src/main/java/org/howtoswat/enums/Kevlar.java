@@ -2,8 +2,8 @@ package org.howtoswat.enums;
 
 public enum Kevlar {
     ELYTRA(Items.ELYTRA, 432, false),
-    LKEV(Items.LKEV, 30, false),
-    SKEV(Items.SKEV, 50, false),
+    LEICHTE_KEVLAR(Items.LEICHTE_KEVLAR, 30, false),
+    SCHWERE_KEVLAR(Items.SCHWERE_KEVLAR, 50, false),
     SPRENGGUERTEL(Items.SPRENGGUERTEL, 80, true);
 
     private final Items item;

@@ -22,6 +22,7 @@ public final class HowToSWAT extends JavaPlugin {
     private final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "" + ChatColor.BOLD + "SERVER" + ChatColor.DARK_GRAY + "] " + ChatColor.RED;
 
     public static final List<Object> admins = new ArrayList<>();
+    public static final List<Object> supporter = new ArrayList<>();
     public static final List<Object> builder = new ArrayList<>();
     public static final List<Object> verifies = new ArrayList<>();
 
@@ -56,6 +57,8 @@ public final class HowToSWAT extends JavaPlugin {
 
     public static File adminsave;
     public static YamlConfiguration adminconfig;
+    public static File supportersave;
+    public static YamlConfiguration supporterconfig;
     public static File buildersave;
     public static YamlConfiguration builderconfig;
     public static File verifysave;
@@ -66,6 +69,11 @@ public final class HowToSWAT extends JavaPlugin {
         adminconfig = YamlConfiguration.loadConfiguration(adminsave);
         DataUtils.checkFile(adminsave, adminconfig, "admins", admins);
         DataUtils.setValues(adminconfig, "admins", admins);
+
+        supportersave = new File("data" + File.separator + "server" + File.separator + "supporter.yml");
+        supporterconfig = YamlConfiguration.loadConfiguration(supportersave);
+        DataUtils.checkFile(supportersave, supporterconfig, "supporter", supporter);
+        DataUtils.setValues(supporterconfig, "supporter", supporter);
 
         buildersave = new File("data" + File.separator + "server" + File.separator + "builder.yml");
         builderconfig = YamlConfiguration.loadConfiguration(buildersave);
@@ -108,6 +116,9 @@ public final class HowToSWAT extends JavaPlugin {
         getCommand("car").setExecutor(new CarCommand());
         getCommand("disablecommand").setExecutor(new DisableCommandCommand());
         getCommand("disableitem").setExecutor(new DisableItemCommand());
+        getCommand("adminchat").setExecutor(new AdminChatCommand());
+        getCommand("msg").setExecutor(new MsgCommand());
+        getCommand("supporter").setExecutor(new SupporterCommand());
     }
 
     private void registerHandlers() {
@@ -128,6 +139,7 @@ public final class HowToSWAT extends JavaPlugin {
 
                 /*
                     Plan:
+                    - Teleport-Befehl für Supporter
                     - Alpha-Spamschutz
                     - Tazer
                  */

@@ -23,9 +23,9 @@ public class KillHandler implements Listener {
 
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "" + ChatColor.BOLD + "KILL" + ChatColor.DARK_GRAY + "] " + ChatColor.WHITE;
 
-    public static HashMap<UUID, String> lastdamage = new HashMap<>();
+    public static final HashMap<UUID, String> lastdamage = new HashMap<>();
 
-    public static List<UUID> deadplayers = new ArrayList<>();
+    public static final List<UUID> deadplayers = new ArrayList<>();
 
     private static final HashMap<UUID, String> deathloadmsg = new HashMap<>();
 
@@ -94,7 +94,7 @@ public class KillHandler implements Listener {
                         name + " verlor seine Familienehre an " + killer + "'s " + item + ".",
                         name + " wurde von " + killer + " durch eine " + item + " präzise exekutiert.",
                         name + " blutete im Duell gegen " + killer + " durch eine " + item + " aus.",
-                        name + " versagte peinlichst gegen " + killer + " und einer " + item + ".",
+                        name + " versagte peinlichst gegen " + killer + " und eine " + item + ".",
                         killer + " missbrauchte " + name + " als seine " + item + "-Zielscheibe.",
                         name + " lernte durch " + killer + "'s " + item + " in den Himmel zu fliegen.",
                         killer + " verwandelte " + name + "'s Kopf mit einer " + item + " in grobes Hack.",

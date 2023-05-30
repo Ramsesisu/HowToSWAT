@@ -19,10 +19,10 @@ public class RequestVerifyCommand implements CommandExecutor {
             Player player = ((Player) sender).getPlayer();
 
             if (!AdminUtils.isVerified(player.getUniqueId().toString())) {
-                for (String uuid : AdminUtils.getAdmins()) {
-                    Player admin = Bukkit.getServer().getPlayer(UUID.fromString(uuid));
-                    if (admin != null) {
-                        VerifyUtils.addRequest(player, admin, VerifyCommand.PREFIX + ChatColor.DARK_GRAY + player.getName() + ChatColor.GRAY + " möchte verifiziert werden.", () -> VerifyCommand.verify(player, admin));
+                for (String uuid : AdminUtils.getSupporter()) {
+                    Player supporter = Bukkit.getServer().getPlayer(UUID.fromString(uuid));
+                    if (supporter != null) {
+                        VerifyUtils.addRequest(player, supporter, VerifyCommand.PREFIX + ChatColor.DARK_GRAY + player.getName() + ChatColor.GRAY + " möchte verifiziert werden.", () -> VerifyCommand.verify(player, supporter));
                     }
                 }
 

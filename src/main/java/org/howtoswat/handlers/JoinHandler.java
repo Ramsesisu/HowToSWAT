@@ -22,8 +22,8 @@ public class JoinHandler implements Listener {
 
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "" + ChatColor.BOLD + "JOIN" + ChatColor.DARK_GRAY + "] " + ChatColor.GOLD;
 
-    public static HashMap<UUID, List<BukkitTask>> playertasks = new HashMap<>();
-    public static List<UUID> spawnschutz = new ArrayList<>();
+    public static final HashMap<UUID, List<BukkitTask>> playertasks = new HashMap<>();
+    public static final List<UUID> spawnschutz = new ArrayList<>();
 
     @EventHandler
     public static void onJoin(PlayerJoinEvent event) {

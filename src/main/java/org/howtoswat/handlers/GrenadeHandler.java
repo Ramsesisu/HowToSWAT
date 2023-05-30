@@ -1,6 +1,8 @@
 package org.howtoswat.handlers;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -36,43 +38,49 @@ public class GrenadeHandler implements Listener {
         Player player = event.getPlayer();
 
         if (!BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
-            for (Grenade grenade : Grenade.values()) {
-                Items items = grenade.getItem();
-                if (items.getItem().getType() == event.getItemDrop().getItemStack().getType()) {
-                    if (DisableItemCommand.disabled.contains(items)) {
-                        if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
-                            return;
-                        }
-                    }
-                    cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
-                    if (cooldowns.containsKey(player.getUniqueId())) {
-                        long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
-                        if (secondsLeft > 0L) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                    cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
-
-                    Item thrown = event.getItemDrop();
-                    Vector velocity = player.getLocation().getDirection();
-                    thrown.setVelocity(velocity.multiply(1.2D));
-
-                    Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
-                        for (Entity entity : thrown.getNearbyEntities(10, 10, 10)) {
-                            if (entity instanceof LivingEntity) {
-                                LivingEntity living = (LivingEntity) entity;
-                                int distance = (int) (Math.ceil(living.getLocation().distance(thrown.getLocation())) / 2);
-                                if (distance < 1) distance = 1;
-                                living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200 / distance, 0));
-                                living.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 400 / distance, 0));
+            ItemStack item = event.getItemDrop().getItemStack();
+            if (item != null) {
+                for (Grenade grenade : Grenade.values()) {
+                    Items items = grenade.getItem();
+                    if (items.getItem().getType() == item.getType()) {
+                        if (item.getItemMeta().getDisplayName().equals(items.getItem().getItemMeta().getDisplayName())) {
+                            if (DisableItemCommand.disabled.contains(item.getItemMeta().getDisplayName())) {
+                                player.sendMessage(DisableItemCommand.PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " ist deaktiviert!");
+                                if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                    return;
+                                }
                             }
                         }
+                        cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
+                        if (cooldowns.containsKey(player.getUniqueId())) {
+                            long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
+                            if (secondsLeft > 0L) {
+                                event.setCancelled(true);
+                                return;
+                            }
+                        }
+                        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
 
-                        thrown.remove();
-                    }, 60L);
+                        Item thrown = event.getItemDrop();
+                        Vector velocity = player.getLocation().getDirection();
+                        thrown.setVelocity(velocity.multiply(1.2D));
 
-                    cooldowntimes.put(player.getUniqueId(), grenade.getCooldown());
+                        Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
+                            for (Entity entity : thrown.getNearbyEntities(10, 10, 10)) {
+                                if (entity instanceof LivingEntity) {
+                                    LivingEntity living = (LivingEntity) entity;
+                                    int distance = (int) (Math.ceil(living.getLocation().distance(thrown.getLocation())) / 2);
+                                    if (distance < 1) distance = 1;
+                                    living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200 / distance, 0));
+                                    living.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 400 / distance, 0));
+                                }
+                            }
+
+                            thrown.remove();
+                        }, 60L);
+
+                        cooldowntimes.put(player.getUniqueId(), grenade.getCooldown());
+                    }
                 }
             }
         }
@@ -89,9 +97,11 @@ public class GrenadeHandler implements Listener {
                 for (Grenade grenade : Grenade.values()) {
                     Items items = grenade.getItem();
                     if (items.getItem().getType() == item.getType()) {
-                        if (DisableItemCommand.disabled.contains(items)) {
-                            if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
-                                return;
+                        if (item.getItemMeta().getDisplayName().equals(items.getItem().getItemMeta().getDisplayName())) {
+                            if (DisableItemCommand.disabled.contains(item.getItemMeta().getDisplayName())) {
+                                if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                    return;
+                                }
                             }
                         }
                         cooldowntimes.putIfAbsent(player.getUniqueId(), 0);

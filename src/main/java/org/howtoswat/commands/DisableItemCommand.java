@@ -19,21 +19,21 @@ import java.util.Set;
 public class DisableItemCommand implements CommandExecutor, TabCompleter {
 
     public static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.RED + "" + ChatColor.BOLD + "ITEM" + ChatColor.DARK_GRAY + "] " + ChatColor.BLUE;
-    public static final List<Items> disabled = new ArrayList<>();
+    public static final List<String> disabled = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
+            if (AdminUtils.isSupporter(player.getUniqueId().toString())) {
                 if (args.length > 0) {
                     for (Items items : Items.values()) {
                         if (items.getName().equalsIgnoreCase(args[0])) {
-                            if (disabled.remove(items)) {
+                            if (disabled.remove(items.getItem().getItemMeta().getDisplayName())) {
                                 Bukkit.broadcastMessage(PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " wurde " + ChatColor.GREEN + "aktiviert" + ChatColor.BLUE + ".");
                             } else {
-                                disabled.add(items);
+                                disabled.add(items.getItem().getItemMeta().getDisplayName());
 
                                 Bukkit.broadcastMessage(PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " wurde " + ChatColor.RED + "deaktiviert" + ChatColor.BLUE + ".");
                             }
@@ -43,7 +43,7 @@ public class DisableItemCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(PREFIX + "Gib ein Item an!");
                 }
             } else {
-                player.sendMessage(PREFIX + "Du bist kein Admin!");
+                player.sendMessage(PREFIX + "Du bist kein Supporter!");
             }
         }
         return true;

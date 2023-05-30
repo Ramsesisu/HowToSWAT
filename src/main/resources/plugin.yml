@@ -80,6 +80,7 @@ commands:
   help:
     description: Gibt eine Liste an Befehlen aus.
     usage: /<command>
+    aliases: ['?']
   car:
     description: Steuert das Auto eines Spielers.
     usage: /<command> ([find|start])
@@ -89,3 +90,14 @@ commands:
   disableitem:
     description: (De-)Aktiviert ein Item.
     usage: /<command> [item]
+  adminchat:
+    description: Schreibt eine Nachricht an alle Admins.
+    usage: /<command> [message...]
+    aliases: [a]
+  msg:
+    description: Schickt eine private Nachricht an einen Spieler.
+    usage: /<command> [player] [message...]
+    aliases: [tell, w]
+  supporter:
+    description: Gibt eine Liste an Supportern aus/Fügt sie hinzu.
+    usage: /<command> ([player])

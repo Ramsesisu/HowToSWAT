@@ -56,9 +56,11 @@ public class GunHandler implements Listener {
                                             return;
                                         }
                                     }
-                                    if (DisableItemCommand.disabled.contains(items)) {
-                                        if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
-                                            return;
+                                    if (item.getItemMeta().getDisplayName().equals(items.getItem().getItemMeta().getDisplayName())) {
+                                        if (DisableItemCommand.disabled.contains(item.getItemMeta().getDisplayName())) {
+                                            if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                                return;
+                                            }
                                         }
                                     }
                                     cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
@@ -320,9 +322,7 @@ public class GunHandler implements Listener {
 
     public static void startSpawnschutz(Player player) {
         JoinHandler.spawnschutz.add(player.getUniqueId());
-        Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
-            endSpawnschutz(player);
-        }, 10 * 20L);
+        Bukkit.getScheduler().runTaskLater(PLUGIN, () -> endSpawnschutz(player), 10 * 20L);
     }
 
     public static void endSpawnschutz(Player player) {

@@ -22,7 +22,7 @@ public class VerifyCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            if (AdminUtils.isAdmin(player.getUniqueId().toString())) {
+            if (AdminUtils.isSupporter(player.getUniqueId().toString())) {
                 if (args.length > 0) {
                     Player verified = Bukkit.getPlayer(args[0]);
                     verify(verified, player);
@@ -39,26 +39,26 @@ public class VerifyCommand implements CommandExecutor {
         return true;
     }
 
-    public static void verify(Player verified, Player admin) {
+    public static void verify(Player verified, Player supporter) {
         String uuid = verified.getUniqueId().toString();
 
         if (AdminUtils.isVerified(uuid)) {
             HowToSWAT.verifies.remove(uuid);
 
-            for (String name : AdminUtils.getAdmins()) {
+            for (String name : AdminUtils.getSupporter()) {
                 Player player = Bukkit.getPlayer(UUID.fromString(name));
                 if (player != null) {
-                    player.sendMessage(PREFIX + ChatColor.DARK_GRAY + verified.getName() + ChatColor.GRAY + " wurde von " + ChatColor.DARK_GRAY + admin.getName() + ChatColor.GRAY + " falsifiziert.");
+                    player.sendMessage(PREFIX + ChatColor.DARK_GRAY + verified.getName() + ChatColor.GRAY + " wurde von " + ChatColor.DARK_GRAY + supporter.getName() + ChatColor.GRAY + " falsifiziert.");
                 }
             }
         } else {
             HowToSWAT.verifies.add(uuid);
 
-            verified.sendMessage(PREFIX + "Du wurdest von " + ChatColor.DARK_GRAY + admin.getName() + ChatColor.GRAY + " verifiziert.");
-            for (String name : AdminUtils.getAdmins()) {
+            verified.sendMessage(PREFIX + "Du wurdest von " + ChatColor.DARK_GRAY + supporter.getName() + ChatColor.GRAY + " verifiziert.");
+            for (String name : AdminUtils.getSupporter()) {
                 Player player = Bukkit.getPlayer(UUID.fromString(name));
                 if (player != null) {
-                    player.sendMessage(PREFIX + ChatColor.DARK_GRAY + verified.getName() + ChatColor.GRAY + " wurde von " + ChatColor.DARK_GRAY + admin.getName() + ChatColor.GRAY + " verifiziert.");
+                    player.sendMessage(PREFIX + ChatColor.DARK_GRAY + verified.getName() + ChatColor.GRAY + " wurde von " + ChatColor.DARK_GRAY + supporter.getName() + ChatColor.GRAY + " verifiziert.");
                 }
             }
         }

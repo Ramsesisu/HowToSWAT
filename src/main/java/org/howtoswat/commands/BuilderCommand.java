@@ -39,7 +39,6 @@ public class BuilderCommand implements CommandExecutor {
                     }
 
                     DataUtils.saveValues(HowToSWAT.buildersave, HowToSWAT.builderconfig, "builder", HowToSWAT.builder);
-
                     return true;
                 }
             }
