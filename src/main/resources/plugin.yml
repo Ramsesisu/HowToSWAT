@@ -101,3 +101,6 @@ commands:
   supporter:
     description: Gibt eine Liste an Supportern aus/Fügt sie hinzu.
     usage: /<command> ([player])
+  teleport:
+    description: Telepotiert einen oder mehrere Spieler.
+    usage: /<command> [from] ([to|x]) ([y]) ([z])

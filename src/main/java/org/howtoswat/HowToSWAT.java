@@ -119,6 +119,7 @@ public final class HowToSWAT extends JavaPlugin {
         getCommand("adminchat").setExecutor(new AdminChatCommand());
         getCommand("msg").setExecutor(new MsgCommand());
         getCommand("supporter").setExecutor(new SupporterCommand());
+        getCommand("teleport").setExecutor(new TeleportCommand());
     }
 
     private void registerHandlers() {
