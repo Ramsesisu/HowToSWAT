@@ -1,5 +1,6 @@
 package org.howtoswat.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import org.howtoswat.HowToSWAT;
 import org.howtoswat.enums.NaviPoint;
 
 import java.util.ArrayList;
@@ -45,6 +47,15 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                             loc = point.getLocation(player.getWorld());
 
                             player.sendMessage(PREFIX + "Dir wird nun die Route zu Punkt " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " angezeigt.");
+                        }
+                    }
+                    for (String point : HowToSWAT.warps.keySet()) {
+                        if (point.equalsIgnoreCase(args[0])) {
+                            Location target = HowToSWAT.warps.get(point);
+                            target.setWorld(player.getWorld());
+                            loc = target;
+
+                            player.sendMessage(PREFIX + "Dir wird nun die Route zu Custom-Punkt " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " angezeigt.");
                         }
                     }
                     String[] arg = args[0].split("/");
@@ -111,6 +122,8 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
             if (BombeCommand.bombs.containsKey(player.getUniqueId())) targets.add("Bombe");
         }
         for (NaviPoint point : NaviPoint.values()) targets.add(point.getName().replace(" ", "-"));
+        for (String point : HowToSWAT.warps.keySet()) targets.add(StringUtils.capitalize(point));
+
         if (args.length == 1) for (String target : targets) if (target.toUpperCase().startsWith(args[0].toUpperCase())) list.add(target);
         return list;
     }

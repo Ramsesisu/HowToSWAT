@@ -24,36 +24,40 @@ public class SaveCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
 
-            List<Object> hotbar = new ArrayList<>();
-            for (int i = 0; i < 9; i++) {
-                try {
-                    player.getInventory().getItem(i).getItemMeta().getDisplayName();
-                    for (Items item : Items.values()) {
-                        try {
-                            if (Objects.equals(item.getItem().getItemMeta().getDisplayName(), player.getInventory().getItem(i).getItemMeta().getDisplayName())) {
-                                if (hotbar.contains(item.getName())) {
-                                    hotbar.add(Items.AIR.getName());
-                                } else {
-                                    hotbar.add(item.getName());
+            if (EquipCommand.equipments.containsKey(player.getUniqueId())) {
+                List<Object> hotbar = new ArrayList<>();
+                for (int i = 0; i < 9; i++) {
+                    try {
+                        player.getInventory().getItem(i).getItemMeta().getDisplayName();
+                        for (Items item : Items.values()) {
+                            try {
+                                if (Objects.equals(item.getItem().getItemMeta().getDisplayName(), player.getInventory().getItem(i).getItemMeta().getDisplayName())) {
+                                    if (hotbar.contains(item.getName())) {
+                                        hotbar.add(Items.AIR.getName());
+                                    } else {
+                                        hotbar.add(item.getName());
+                                    }
                                 }
+                            } catch (NullPointerException ignored) {
                             }
-                        } catch (NullPointerException ignored) {
                         }
+                    } catch (NullPointerException e) {
+                        hotbar.add(Items.AIR.getName());
                     }
-                } catch (NullPointerException e) {
-                    hotbar.add(Items.AIR.getName());
                 }
+
+                File save = new File("data" + File.separator + "equipment" + File.separator + player.getUniqueId().toString() + ".yml");
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(save);
+
+                String equip = EquipCommand.equipments.get(player.getUniqueId());
+                DataUtils.checkFile(save, config, equip, new ArrayList<>());
+
+                DataUtils.saveValues(save, config, equip, hotbar);
+
+                player.sendMessage(PREFIX + "Die Equipkonfiguration " + ChatColor.DARK_GRAY + StringUtils.capitalize(equip) + ChatColor.GRAY + " wurde gespeichert.");
+            } else {
+                player.sendMessage(PREFIX + "Du hast dir nichts equipt!");
             }
-
-            File save = new File("data" + File.separator + "equipment" + File.separator + player.getUniqueId().toString() + ".yml");
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(save);
-
-            String equip = EquipCommand.equipments.get(player.getUniqueId());
-            DataUtils.checkFile(save, config, equip, new ArrayList<>());
-
-            DataUtils.saveValues(save, config, equip, hotbar);
-
-            player.sendMessage(PREFIX + "Die Equipkonfiguration " + ChatColor.DARK_GRAY + StringUtils.capitalize(equip) + ChatColor.GRAY + " wurde gespeichert.");
         }
         return true;
     }

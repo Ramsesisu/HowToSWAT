@@ -6,16 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.howtoswat.enums.NaviPoint;
 import org.howtoswat.utils.AdminUtils;
-import org.howtoswat.utils.VerifyUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TeleportCommand implements CommandExecutor, TabCompleter {
+public class TeleportCommand implements CommandExecutor {
 
     private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "TELEPORT" + ChatColor.DARK_GRAY + "] " + ChatColor.YELLOW;
 
@@ -66,7 +60,7 @@ public class TeleportCommand implements CommandExecutor, TabCompleter {
                         double z = getCoord(player.getLocation().getZ(), args[3]);
                         from.teleport(new Location(from.getWorld(), x, y, z));
 
-                        player.sendMessage(PREFIX + ChatColor.GOLD + from.getName() + ChatColor.YELLOW + " wurde zu " + ChatColor.GOLD + x + ChatColor.YELLOW + ", " + ChatColor.GOLD + y + ChatColor.YELLOW + ", " + ChatColor.GOLD + z + ChatColor.YELLOW + " teleportiert.");
+                        player.sendMessage(PREFIX + ChatColor.GOLD + from.getName() + ChatColor.YELLOW + " wurde zu " + ChatColor.GOLD + (int) x + ChatColor.YELLOW + ", " + ChatColor.GOLD + (int) y + ChatColor.YELLOW + ", " + ChatColor.GOLD + (int) z + ChatColor.YELLOW + " teleportiert.");
                     } else {
                         player.sendMessage(PREFIX + "Der Spieler " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " wurde nicht gefunden!");
                     }
@@ -81,27 +75,14 @@ public class TeleportCommand implements CommandExecutor, TabCompleter {
     }
 
     private static double getCoord(double loc, String arg) {
-        double coord = Double.parseDouble(arg.replace("~", ""));
+        String string = arg.replace("~", "");
+        if (string.isEmpty()) {
+            string = "0";
+        }
+        double coord = Double.parseDouble(string);
         if (arg.startsWith("~")) {
             coord = loc + coord;
         }
         return coord;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
-        ArrayList<String> list = new ArrayList<>();
-        List<String> targets = new ArrayList<>();
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            Location loc = player.getLocation();
-            targets.add(loc.getBlockX() + "/" + loc.getBlockY() + "/" + loc.getBlockZ());
-
-            if (BombeCommand.bombs.containsKey(player.getUniqueId())) targets.add("Bombe");
-        }
-        for (NaviPoint point : NaviPoint.values()) targets.add(point.getName().replace(" ", "-"));
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) targets.add(player.getName());
-        if (args.length == 1) for (String target : targets) if (target.toUpperCase().startsWith(args[0].toUpperCase())) list.add(target);
-        return list;
     }
 }

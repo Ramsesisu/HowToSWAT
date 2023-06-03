@@ -1,5 +1,6 @@
 package org.howtoswat.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.howtoswat.HowToSWAT;
 import org.howtoswat.enums.NaviPoint;
 import org.howtoswat.utils.VerifyUtils;
 
@@ -32,15 +34,29 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
                 }
+                for (String point : HowToSWAT.warps.keySet()) {
+                    if (point.equalsIgnoreCase(args[0])) {
+                        Location target = HowToSWAT.warps.get(point);
+                        target.setWorld(player.getWorld());
+                        player.teleport(target);
+
+                        player.sendMessage(PREFIX + "Du wurdest zu Custom-Punkt " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert.");
+                        return true;
+                    }
+                }
                 for (Player target : Bukkit.getServer().getOnlinePlayers()) {
                     if (target.getName().equalsIgnoreCase(args[0])) {
-                        VerifyUtils.addRequest(player, target, PREFIX + "Der Spieler " + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " möchte sich zu dir warpen.", () -> {
-                            player.teleport(target.getLocation());
+                        if (target.getWorld() == player.getWorld()) {
+                            VerifyUtils.addRequest(player, target, PREFIX + "Der Spieler " + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " möchte sich zu dir warpen.", () -> {
+                                player.teleport(target.getLocation());
 
-                            player.sendMessage(PREFIX + "Du wurdest zu Spieler " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert.");
-                        });
+                                player.sendMessage(PREFIX + "Du wurdest zu Spieler " + ChatColor.GOLD + target.getName() + ChatColor.YELLOW + " teleportiert.");
+                            });
 
-                        player.sendMessage(VerifyUtils.PREFIX + "Deine Warp-Anfrage wurde gestellt.");
+                            player.sendMessage(VerifyUtils.PREFIX + "Deine Warp-Anfrage wurde gestellt.");
+                        } else  {
+                            player.sendMessage(PREFIX + "Der Spieler " + ChatColor.GOLD + target.getName() + ChatColor.YELLOW + " befindet sich in einer anderen Welt!");
+                        }
                         return true;
                     }
                 }
@@ -48,7 +64,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 if (arg.length == 3) {
                     List<Double> coords = new ArrayList<>();
                     for (String coord : arg) coords.add(Double.valueOf(coord));
-                    player.teleport(new Location(player.getWorld(), coords.get(0) / 0.5, coords.get(1), coords.get(2) + 0.5));
+                    player.teleport(new Location(player.getWorld(), coords.get(0) + 0.5, coords.get(1), coords.get(2) + 0.5));
 
                     player.sendMessage(PREFIX + "Du wurdest zu Koordinate " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert.");
                     return true;
@@ -81,7 +97,9 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
             if (BombeCommand.bombs.containsKey(player.getUniqueId())) targets.add("Bombe");
         }
         for (NaviPoint point : NaviPoint.values()) targets.add(point.getName().replace(" ", "-"));
+        for (String point : HowToSWAT.warps.keySet()) targets.add(StringUtils.capitalize(point));
         for (Player player : Bukkit.getServer().getOnlinePlayers()) targets.add(player.getName());
+
         if (args.length == 1) for (String target : targets) if (target.toUpperCase().startsWith(args[0].toUpperCase())) list.add(target);
         return list;
     }

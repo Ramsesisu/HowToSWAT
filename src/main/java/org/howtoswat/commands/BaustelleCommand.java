@@ -25,7 +25,8 @@ public class BaustelleCommand implements CommandExecutor {
                 Location loc = player.getLocation();
 
                 if (Objects.equals(player.getWorld().getName(), "Baustelle")) {
-                    player.teleport(new Location(Bukkit.getWorld("Training"), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+                    loc.setWorld(Bukkit.getWorld("Training"));
+                    player.teleport(loc);
 
                     String name = player.getPlayerListName();
                     if (name.contains(BuildmodeCommand.SUFFIX.replace(" ", ""))) {
@@ -40,7 +41,8 @@ public class BaustelleCommand implements CommandExecutor {
 
                     player.sendMessage(PREFIX + "Du hast die Baustelle verlassen.");
                 } else {
-                    player.teleport(new Location(Bukkit.getWorld("Baustelle"), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+                    loc.setWorld(Bukkit.getWorld("Baustelle"));
+                    player.teleport(loc);
 
                     player.sendMessage(PREFIX + "Du hast die Baustelle betreten.");
                 }

@@ -12,9 +12,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.howtoswat.commands.*;
-import org.howtoswat.utils.AdminUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import static org.howtoswat.HowToSWAT.PLUGIN;
 
@@ -59,11 +61,7 @@ public class JoinHandler implements Listener {
 
         loc = player.getLocation();
         loc.setWorld(Bukkit.getWorld("Training"));
-        if (Objects.equals(player.getWorld().getName(), "Baustelle")) {
-            if (!AdminUtils.isBuilder(player.getUniqueId().toString())) {
-                player.teleport(loc);
-            }
-        }
+        player.teleport(loc);
 
         if (EquipCommand.equipments.containsKey(player.getUniqueId())) EquipCommand.equip(player, EquipCommand.equipments.get(player.getUniqueId()));
 
@@ -104,9 +102,11 @@ public class JoinHandler implements Listener {
         BuildmodeCommand.buildmode.remove(player.getUniqueId());
 
         if (playertasks.containsKey(player.getUniqueId())) {
-            for (BukkitTask task : playertasks.get(player.getUniqueId())) {
-                task.cancel();
-                playertasks.get(player.getUniqueId()).remove(task);
+            if (playertasks.get(player.getUniqueId()) != null) {
+                for (BukkitTask task : playertasks.get(player.getUniqueId())) {
+                    task.cancel();
+                    playertasks.get(player.getUniqueId()).remove(task);
+                }
             }
         }
 

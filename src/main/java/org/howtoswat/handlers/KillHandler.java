@@ -145,7 +145,9 @@ public class KillHandler implements Listener {
 
                     if (EquipCommand.equipments.containsKey(player.getUniqueId())) EquipCommand.equip(player, EquipCommand.equipments.get(player.getUniqueId()));
 
-                    player.teleport(player.getBedSpawnLocation());
+                    Location spawn = player.getBedSpawnLocation();
+                    spawn.setWorld(player.getWorld());
+                    player.teleport(spawn);
 
                     if (BuildmodeCommand.buildmode.contains(player.getUniqueId())) {
                         player.setGameMode(GameMode.CREATIVE);

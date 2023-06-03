@@ -22,6 +22,13 @@ public class DataUtils {
         }
     }
 
+    public static YamlConfiguration loadData(File save, String name, List<Object> list) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(save);
+        DataUtils.checkFile(save, config, name, list);
+        DataUtils.setValues(config, name, list);
+        return config;
+    }
+
     public static List<Object> getValues(YamlConfiguration config, String name) {
         return new ArrayList<>(config.getList(name));
     }

@@ -51,13 +51,15 @@ public class ItemHandler implements Listener {
             if (item != null) {
                 for (Items items : Items.values()) {
                     if (item.getType() == items.getItem().getType()) {
-                        if (item.getItemMeta().getDisplayName().equals(items.getItem().getItemMeta().getDisplayName())) {
-                            if (DisableItemCommand.disabled.contains(item.getItemMeta().getDisplayName())) {
-                                if (event.getWhoClicked() instanceof Player) {
-                                    Player player = (Player) event.getWhoClicked();
-                                    player.sendMessage(DisableItemCommand.PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " ist deaktiviert!");
-                                    if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
-                                        event.setCancelled(true);
+                        if (item.getItemMeta().getDisplayName() != null) {
+                            if (item.getItemMeta().getDisplayName().equals(items.getItem().getItemMeta().getDisplayName())) {
+                                if (DisableItemCommand.disabled.contains(item.getItemMeta().getDisplayName())) {
+                                    if (event.getWhoClicked() instanceof Player) {
+                                        Player player = (Player) event.getWhoClicked();
+                                        player.sendMessage(DisableItemCommand.PREFIX + "Das Item " + ChatColor.AQUA + StringUtils.capitalize(items.getName()) + ChatColor.BLUE + " ist deaktiviert!");
+                                        if (!AdminUtils.isAdmin(player.getUniqueId().toString())) {
+                                            event.setCancelled(true);
+                                        }
                                     }
                                 }
                             }

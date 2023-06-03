@@ -14,6 +14,8 @@ import org.howtoswat.handlers.GunHandler;
 import org.howtoswat.utils.AdminUtils;
 import org.howtoswat.utils.VerifyUtils;
 
+import java.util.Objects;
+
 import static org.howtoswat.HowToSWAT.PLUGIN;
 
 public class SprengguertelCommand implements CommandExecutor {
@@ -54,11 +56,13 @@ public class SprengguertelCommand implements CommandExecutor {
                             for (Kevlar kevlar : Kevlar.values()) {
                                 if (player.getInventory().getChestplate() != null) {
                                     if (kevlar.getItem().getItem().getType() == player.getInventory().getChestplate().getType()) {
-                                        if (kevlar.isExplosive()) {
-                                            ExplosiveHandler.explode(player, player.getLocation(), 6);
+                                        if (Objects.equals(kevlar.getItem().getItem().getItemMeta().getDisplayName(), player.getInventory().getChestplate().getItemMeta().getDisplayName())) {
+                                            if (kevlar.isExplosive()) {
+                                                ExplosiveHandler.explode(player, player.getLocation(), 6);
 
-                                            player.sendMessage(PREFIX + "Dein Sprenggürtel ist explodiert.");
-                                            return;
+                                                player.sendMessage(PREFIX + "Dein Sprenggürtel ist explodiert.");
+                                                return;
+                                            }
                                         }
                                     }
                                 }

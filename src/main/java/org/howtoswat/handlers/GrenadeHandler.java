@@ -69,6 +69,11 @@ public class GrenadeHandler implements Listener {
                             for (Entity entity : thrown.getNearbyEntities(10, 10, 10)) {
                                 if (entity instanceof LivingEntity) {
                                     LivingEntity living = (LivingEntity) entity;
+                                    if (living instanceof Player) {
+                                        if (GunHandler.hasSpawnschutz(((Player) living).getPlayer())) {
+                                            continue;
+                                        }
+                                    }
                                     int distance = (int) (Math.ceil(living.getLocation().distance(thrown.getLocation())) / 2);
                                     if (distance < 1) distance = 1;
                                     living.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200 / distance, 0));

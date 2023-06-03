@@ -104,3 +104,10 @@ commands:
   teleport:
     description: Telepotiert einen oder mehrere Spieler.
     usage: /<command> [from] ([to|x]) ([y]) ([z])
+    aliases: [tp]
+  private:
+    description: Betritt/Erstellt eine private Welt.
+    usage: /<command> ([player])
+  point:
+    description: Erstellt/Löscht einen Custom-Punkt zum Warpen.
+    usage: /<command> [point]

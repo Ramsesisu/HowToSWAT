@@ -1,6 +1,8 @@
 package org.howtoswat;
 
+import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Minecart;
 import org.bukkit.plugin.PluginManager;
@@ -10,14 +12,14 @@ import org.howtoswat.handlers.*;
 import org.howtoswat.utils.DataUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public final class HowToSWAT extends JavaPlugin {
 
     public static HowToSWAT PLUGIN;
 
-    public static String VERSION = "2.0";
+    public static String VERSION = "2.1";
 
     private final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "" + ChatColor.BOLD + "SERVER" + ChatColor.DARK_GRAY + "] " + ChatColor.RED;
 
@@ -25,6 +27,11 @@ public final class HowToSWAT extends JavaPlugin {
     public static final List<Object> supporter = new ArrayList<>();
     public static final List<Object> builder = new ArrayList<>();
     public static final List<Object> verifies = new ArrayList<>();
+
+    public static final HashMap<String, Location> warps = new HashMap<>();
+
+    public static World training;
+    public static World baustelle;
 
     @Override
     public void onEnable() {
@@ -48,11 +55,26 @@ public final class HowToSWAT extends JavaPlugin {
         for (Minecart minecart : CarCommand.minecarts.values()) {
             minecart.remove();
         }
+
+        for (World world : PrivateCommand.worlds) {
+            Bukkit.getServer().unloadWorld(world, false);
+        }
     }
 
     private void loadWorlds() {
-        new WorldCreator("Training").createWorld();
-        new WorldCreator("Baustelle").createWorld();
+        try {
+            FileUtils.deleteDirectory(new File("private"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        training = new WorldCreator("Training").createWorld();
+        baustelle = new WorldCreator("Baustelle").createWorld();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, () -> {
+            training.save();
+            baustelle.save();
+        }, 0L, 100L);
     }
 
     public static File adminsave;
@@ -63,27 +85,30 @@ public final class HowToSWAT extends JavaPlugin {
     public static YamlConfiguration builderconfig;
     public static File verifysave;
     public static YamlConfiguration verifyconfig;
+    public static File warpssave;
+    public static YamlConfiguration warpsconfig;
 
     private void loadData() {
         adminsave = new File("data" + File.separator + "server" + File.separator + "admins.yml");
-        adminconfig = YamlConfiguration.loadConfiguration(adminsave);
-        DataUtils.checkFile(adminsave, adminconfig, "admins", admins);
-        DataUtils.setValues(adminconfig, "admins", admins);
+        adminconfig = DataUtils.loadData(adminsave, "admins", admins);
 
         supportersave = new File("data" + File.separator + "server" + File.separator + "supporter.yml");
-        supporterconfig = YamlConfiguration.loadConfiguration(supportersave);
-        DataUtils.checkFile(supportersave, supporterconfig, "supporter", supporter);
-        DataUtils.setValues(supporterconfig, "supporter", supporter);
+        supporterconfig = DataUtils.loadData(supportersave, "supporter", supporter);
 
         buildersave = new File("data" + File.separator + "server" + File.separator + "builder.yml");
-        builderconfig = YamlConfiguration.loadConfiguration(buildersave);
-        DataUtils.checkFile(buildersave, builderconfig, "builder", builder);
-        DataUtils.setValues(builderconfig, "builder", builder);
+        builderconfig = DataUtils.loadData(buildersave, "builder", builder);
 
         verifysave = new File("data" + File.separator + "server" + File.separator + "verified.yml");
-        verifyconfig = YamlConfiguration.loadConfiguration(verifysave);
-        DataUtils.checkFile(verifysave, verifyconfig, "verify", verifies);
-        DataUtils.setValues(verifyconfig, "verify", verifies);
+        verifyconfig = DataUtils.loadData(verifysave, "verify", verifies);
+
+        warpssave = new File("data" + File.separator + "server" + File.separator + "warps.yml");
+        warpsconfig = YamlConfiguration.loadConfiguration(warpssave);
+        DataUtils.checkFile(warpssave, warpsconfig, "warps", new ArrayList<>());
+        MemorySection section = (MemorySection) warpsconfig.getValues(false).get("warps");
+        Map<String, Object> values = section.getValues(false);
+        for (Object value : values.keySet()) {
+            warps.put(value.toString(), (Location) values.get(value));
+        }
     }
 
     private void registerCommands() {
@@ -120,6 +145,8 @@ public final class HowToSWAT extends JavaPlugin {
         getCommand("msg").setExecutor(new MsgCommand());
         getCommand("supporter").setExecutor(new SupporterCommand());
         getCommand("teleport").setExecutor(new TeleportCommand());
+        getCommand("private").setExecutor(new PrivateCommand());
+        getCommand("point").setExecutor(new PointCommand());
     }
 
     private void registerHandlers() {
@@ -137,10 +164,3 @@ public final class HowToSWAT extends JavaPlugin {
         pluginManager.registerEvents(new CarHandler(), this);
     }
 }
-
-                /*
-                    Plan:
-                    - Teleport-Befehl für Supporter
-                    - Alpha-Spamschutz
-                    - Tazer
-                 */
