@@ -9,8 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.howtoswat.enums.Drug;
+import org.howtoswat.enums.Kevlar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,20 @@ public class UseCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
+
+            ItemStack chestplate = player.getInventory().getChestplate();
+            if (chestplate != null) {
+                for (Kevlar kevlar : Kevlar.values()) {
+                    if (kevlar.getItem().getItem().getType() == chestplate.getType()) {
+                        if (kevlar.getItem().getItem().getItemMeta().getDisplayName().equals(chestplate.getItemMeta().getDisplayName())) {
+                            if (kevlar.isExplosive()) {
+                                player.sendMessage(SprengguertelCommand.PREFIX + "Du kannst gerade keine Drogen nehmen!");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
 
             int cooldownTime = 3;
             if (cooldowns.containsKey(player.getUniqueId())) {

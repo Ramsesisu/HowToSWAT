@@ -21,11 +21,10 @@ import java.util.*;
 
 public class EquipCommand implements CommandExecutor, TabCompleter {
 
-    private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "" + ChatColor.BOLD + "EQUIP" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
-
+    public static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "" + ChatColor.BOLD + "EQUIP" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
     public static final HashMap<UUID, Long> cooldowns = new HashMap<>();
-
     public static final HashMap<UUID, String> equipments = new HashMap<>();
+    public static final HashMap<UUID, Long> explosivecooldowns = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
@@ -133,6 +132,8 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
 
                 player.sendMessage(PREFIX + "Du hast dich mit " + ChatColor.DARK_GRAY + StringUtils.capitalize(equip.getName()) + ChatColor.GRAY + " equippt.");
 
+                explosivecooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+
                 cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
 
                 return;
@@ -140,8 +141,6 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
         }
 
         player.setPlayerListName(listname);
-
-        equipments.put(player.getUniqueId(), Equip.NONE.getName());
 
         player.sendMessage(PREFIX + "Das Equip " + ChatColor.DARK_GRAY + equipname + ChatColor.GRAY + " exisitert nicht!");
     }

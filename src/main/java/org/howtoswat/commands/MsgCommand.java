@@ -26,8 +26,8 @@ public class MsgCommand implements CommandExecutor {
                         }
                         message.delete(0, args[0].length() + 1);
 
-                        player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "MSG" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + player.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " >" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + target.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.DARK_GRAY + " »" + ChatColor.GRAY + message);
-                        target.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "MSG" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + target.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " <" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + player.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.DARK_GRAY + " »" + ChatColor.GRAY + message);
+                        player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "MSG" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + player.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " >" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + target.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.DARK_GRAY + " »" + ChatColor.DARK_GRAY + message);
+                        target.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "MSG" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + target.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " <" + ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + ChatColor.BOLD + player.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.DARK_GRAY + " »" + ChatColor.DARK_GRAY + message);
                     } else {
                         player.sendMessage(PREFIX + "Gib eine Nachricht an!");
                     }

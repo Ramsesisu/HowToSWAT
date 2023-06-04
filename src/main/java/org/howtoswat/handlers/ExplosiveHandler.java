@@ -1,5 +1,6 @@
 package org.howtoswat.handlers;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -37,6 +38,7 @@ public class ExplosiveHandler implements Listener {
                 if (!living.isInvulnerable()) {
                     if (living instanceof Player) {
                         if (GunHandler.hasSpawnschutz(((Player) living).getPlayer())) continue;
+                        if (((Player) living).getGameMode() != GameMode.SURVIVAL) continue;
                     }
                     living.setHealth(0);
                 }

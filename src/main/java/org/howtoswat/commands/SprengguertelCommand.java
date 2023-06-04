@@ -1,7 +1,9 @@
 package org.howtoswat.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +22,7 @@ import static org.howtoswat.HowToSWAT.PLUGIN;
 
 public class SprengguertelCommand implements CommandExecutor {
 
-    private static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "" + ChatColor.BOLD + "SPRENGI" + ChatColor.DARK_GRAY + "] " + ChatColor.YELLOW;
+    public static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "" + ChatColor.BOLD + "SPRENGI" + ChatColor.DARK_GRAY + "] " + ChatColor.YELLOW;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
@@ -55,13 +57,23 @@ public class SprengguertelCommand implements CommandExecutor {
                         Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
                             for (Kevlar kevlar : Kevlar.values()) {
                                 if (player.getInventory().getChestplate() != null) {
-                                    if (kevlar.getItem().getItem().getType() == player.getInventory().getChestplate().getType()) {
-                                        if (Objects.equals(kevlar.getItem().getItem().getItemMeta().getDisplayName(), player.getInventory().getChestplate().getItemMeta().getDisplayName())) {
-                                            if (kevlar.isExplosive()) {
-                                                ExplosiveHandler.explode(player, player.getLocation(), 6);
+                                    if (player.getGameMode() == GameMode.SURVIVAL) {
+                                        if (kevlar.getItem().getItem().getType() == player.getInventory().getChestplate().getType()) {
+                                            if (Objects.equals(kevlar.getItem().getItem().getItemMeta().getDisplayName(), player.getInventory().getChestplate().getItemMeta().getDisplayName())) {
+                                                if (kevlar.isExplosive()) {
+                                                    long duration = System.currentTimeMillis();
+                                                    if (EquipCommand.explosivecooldowns.containsKey(player.getUniqueId())) {
+                                                        duration = System.currentTimeMillis() - EquipCommand.explosivecooldowns.get(player.getUniqueId());
+                                                    }
+                                                    if (duration > 30 * 1000L) {
+                                                        ExplosiveHandler.explode(player, player.getLocation(), 6);
 
-                                                player.sendMessage(PREFIX + "Dein Sprenggürtel ist explodiert.");
-                                                return;
+                                                        player.sendMessage(PREFIX + "Dein Sprenggürtel ist explodiert.");
+                                                    } else {
+                                                        player.sendMessage(EquipCommand.PREFIX + "Du kannst das Item " + ChatColor.DARK_GRAY + StringUtils.capitalize(kevlar.getItem().getName()) + ChatColor.GRAY + " erst in " + ChatColor.DARK_GRAY + (30 - duration / 1000) + " Sekunden " + ChatColor.GRAY + " verwenden!");
+                                                    }
+                                                    return;
+                                                }
                                             }
                                         }
                                     }

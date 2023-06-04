@@ -24,6 +24,8 @@ public class CoolDownCommand implements CommandExecutor {
                 if (args.length > 0) {
                     if (Bukkit.getServer().getPlayer(args[0]) != null) {
                         player = Bukkit.getServer().getPlayer(args[0]);
+
+                        sender.sendMessage(PREFIX + "Die Cooldowns von " + ChatColor.GRAY + player.getName() + ChatColor.DARK_GRAY + " werden zurückgesetzt.");
                     }
                 }
                 EquipCommand.cooldowns.put(player.getUniqueId(), 0L);
@@ -31,6 +33,7 @@ public class CoolDownCommand implements CommandExecutor {
                 GunHandler.cooldowntimes.put(player.getUniqueId(), 0);
                 GrenadeHandler.cooldowntimes.put(player.getUniqueId(), 0);
                 DamageHandler.cooldowntimes.put(player.getUniqueId(), 0);
+                EquipCommand.explosivecooldowns.put(player.getUniqueId(), 0L);
 
                 player.sendMessage(PREFIX + "Deine Cooldowns wurden zurückgesetzt.");
             } else {

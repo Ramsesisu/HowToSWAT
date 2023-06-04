@@ -3,6 +3,7 @@ package org.howtoswat.handlers;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -70,9 +71,8 @@ public class GrenadeHandler implements Listener {
                                 if (entity instanceof LivingEntity) {
                                     LivingEntity living = (LivingEntity) entity;
                                     if (living instanceof Player) {
-                                        if (GunHandler.hasSpawnschutz(((Player) living).getPlayer())) {
-                                            continue;
-                                        }
+                                        if (GunHandler.hasSpawnschutz(((Player) living).getPlayer())) continue;
+                                        if (((Player) living).getGameMode() != GameMode.SURVIVAL) continue;
                                     }
                                     int distance = (int) (Math.ceil(living.getLocation().distance(thrown.getLocation())) / 2);
                                     if (distance < 1) distance = 1;

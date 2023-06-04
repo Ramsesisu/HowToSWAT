@@ -9,6 +9,6 @@ public class ChatHandler implements Listener {
 
     @EventHandler
     public static void onChat(AsyncPlayerChatEvent event) {
-        event.setFormat(ChatColor.GRAY + "" + ChatColor.ITALIC + "CHAT" + ChatColor.DARK_GRAY + " [" + ChatColor.WHITE + ChatColor.BOLD + event.getPlayer().getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " » " + ChatColor.WHITE + event.getMessage());
+        event.setFormat(ChatColor.GRAY + "" + ChatColor.ITALIC + "CHAT" + ChatColor.DARK_GRAY + " [" + ChatColor.WHITE + ChatColor.BOLD + event.getPlayer().getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " » " + ChatColor.GRAY + event.getMessage());
     }
 }

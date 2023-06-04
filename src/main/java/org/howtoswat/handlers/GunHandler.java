@@ -1,5 +1,6 @@
 package org.howtoswat.handlers;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
@@ -20,8 +21,11 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.howtoswat.commands.BuildmodeCommand;
 import org.howtoswat.commands.DisableItemCommand;
+import org.howtoswat.commands.EquipCommand;
+import org.howtoswat.commands.SprengguertelCommand;
 import org.howtoswat.enums.Gun;
 import org.howtoswat.enums.Items;
+import org.howtoswat.enums.Kevlar;
 import org.howtoswat.utils.AdminUtils;
 import org.howtoswat.utils.SoundUtils;
 import org.howtoswat.utils.VerifyUtils;
@@ -63,6 +67,31 @@ public class GunHandler implements Listener {
                                             }
                                         }
                                     }
+                                    if (gun.isExplosive()) {
+                                        long duration = System.currentTimeMillis();
+                                        if (EquipCommand.explosivecooldowns.containsKey(player.getUniqueId())) {
+                                            duration = System.currentTimeMillis() - EquipCommand.explosivecooldowns.get(player.getUniqueId());
+                                        }
+                                        if (duration < 60 * 1000L) {
+                                            player.sendMessage(EquipCommand.PREFIX + "Du kannst das Item " + ChatColor.DARK_GRAY + StringUtils.capitalize(gun.getItem().getName()) + ChatColor.GRAY + " erst in " + ChatColor.DARK_GRAY + (60 - duration / 1000) + " Sekunden " + ChatColor.GRAY + " verwenden!");
+                                            return;
+                                        }
+                                    }
+
+                                    ItemStack chestplate = player.getInventory().getChestplate();
+                                    if (chestplate != null) {
+                                        for (Kevlar kevlar : Kevlar.values()) {
+                                            if (kevlar.getItem().getItem().getType() == chestplate.getType()) {
+                                                if (kevlar.getItem().getItem().getItemMeta().getDisplayName().equals(chestplate.getItemMeta().getDisplayName())) {
+                                                    if (kevlar.isExplosive()) {
+                                                        player.sendMessage(SprengguertelCommand.PREFIX + "Du kannst gerade nicht schießen!");
+                                                        return;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
                                     cooldowntimes.putIfAbsent(player.getUniqueId(), 0);
                                     if (cooldowns.containsKey(player.getUniqueId())) {
                                         long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();

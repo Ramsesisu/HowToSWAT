@@ -29,7 +29,7 @@ public class AdminChatCommand implements CommandExecutor {
                     for (String uuid : AdminUtils.getSupporter()) {
                         Player supporter = Bukkit.getServer().getPlayer(UUID.fromString(uuid));
                         if (supporter != null) {
-                            supporter.sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "ADMIN" + ChatColor.DARK_GRAY + " [" + ChatColor.DARK_RED + ChatColor.BOLD + player.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " »" + ChatColor.WHITE + message);
+                            supporter.sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "ADMIN" + ChatColor.DARK_GRAY + " [" + ChatColor.DARK_RED + ChatColor.BOLD + player.getName() + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " »" + ChatColor.GRAY + message);
                         }
                     }
                 } else {

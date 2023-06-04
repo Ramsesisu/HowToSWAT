@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.howtoswat.utils.AdminUtils;
 
 public class HealCommand implements CommandExecutor {
 
@@ -18,6 +19,16 @@ public class HealCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
+
+            if (args.length > 0) {
+                if (AdminUtils.isSupporter(player.getUniqueId().toString())) {
+                    if (Bukkit.getServer().getPlayer(args[0]) != null) {
+                        player = Bukkit.getServer().getPlayer(args[0]);
+
+                        sender.sendMessage(PREFIX + "Der Spieler " + ChatColor.DARK_GREEN + player.getName() + ChatColor.GREEN + " wird geheilt.");
+                    }
+                }
+            }
 
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
             for (PotionEffect effect : player.getActivePotionEffects()) player.removePotionEffect(effect.getType());
