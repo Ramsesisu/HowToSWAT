@@ -6,6 +6,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -14,6 +15,11 @@ import org.howtoswat.enums.Gun;
 import java.util.Objects;
 
 public class ExplosiveHandler implements Listener {
+
+    @EventHandler
+    public static void onExplode(ExplosionPrimeEvent event) {
+        event.setCancelled(true);
+    }
 
     @EventHandler
     public static void onRocket(ProjectileHitEvent event) {

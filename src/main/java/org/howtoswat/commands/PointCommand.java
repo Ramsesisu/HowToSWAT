@@ -28,11 +28,11 @@ public class PointCommand implements CommandExecutor, TabCompleter {
                     if (HowToSWAT.warps.containsKey(args[0].toLowerCase())) {
                         HowToSWAT.warps.remove(args[0].toLowerCase());
 
-                        player.sendMessage(PREFIX + "Der Custom-Punkt " + ChatColor.YELLOW + args[0].toLowerCase() + ChatColor.GOLD + " wurde entfernt.");
+                        player.sendMessage(PREFIX + "Der Custom-Punkt " + ChatColor.YELLOW + args[0] + ChatColor.GOLD + " wurde entfernt.");
                     } else {
                         HowToSWAT.warps.put(args[0].toLowerCase(), player.getLocation());
 
-                        player.sendMessage(PREFIX + "Du hast den Custom-Punkt " + ChatColor.YELLOW + args[0].toLowerCase() + ChatColor.GOLD + " erstellt.");
+                        player.sendMessage(PREFIX + "Du hast den Custom-Punkt " + ChatColor.YELLOW + args[0] + ChatColor.GOLD + " erstellt.");
                     }
 
                     HowToSWAT.warpsconfig.set("warps", HowToSWAT.warps);

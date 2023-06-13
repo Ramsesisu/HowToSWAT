@@ -32,7 +32,7 @@ public class BombeCommand implements CommandExecutor {
 
                 player.sendMessage(PREFIX + "Du hast die Bombe bei " + ChatColor.RED + loc.getBlockX() + ChatColor.GRAY + ", " + ChatColor.RED + loc.getBlockY() + ChatColor.GRAY + ", " + ChatColor.RED + loc.getBlockZ() + ChatColor.GRAY + " entfernt.");
             } else {
-                if (!block.getType().isSolid()) {
+                if (block.getType() == Material.AIR) {
                     block.setType(Material.TNT);
 
                     bombs.put(player.getUniqueId(), block.getLocation());

@@ -13,7 +13,10 @@ import org.howtoswat.utils.DataUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class HowToSWAT extends JavaPlugin {
 
@@ -71,6 +74,17 @@ public final class HowToSWAT extends JavaPlugin {
         training = new WorldCreator("Training").createWorld();
         baustelle = new WorldCreator("Baustelle").createWorld();
 
+        for (World world : Bukkit.getServer().getWorlds()) {
+            world.setGameRuleValue("announceAdvancements", "false");
+            world.setGameRuleValue("disableElytraMovementCheck", "true");
+            world.setGameRuleValue("doFireTick", "false");
+            world.setGameRuleValue("keepInventory", "true");
+            world.setGameRuleValue("mobGriefing", "false");
+            world.setGameRuleValue("naturalRegeneration", "true");
+            world.setGameRuleValue("sendCommandFeedback", "false");
+            world.setGameRuleValue("showDeathMessages", "false");
+        }
+
         Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, () -> {
             training.save();
             baustelle.save();
@@ -104,10 +118,13 @@ public final class HowToSWAT extends JavaPlugin {
         warpssave = new File("data" + File.separator + "server" + File.separator + "warps.yml");
         warpsconfig = YamlConfiguration.loadConfiguration(warpssave);
         DataUtils.checkFile(warpssave, warpsconfig, "warps", new ArrayList<>());
-        MemorySection section = (MemorySection) warpsconfig.getValues(false).get("warps");
-        Map<String, Object> values = section.getValues(false);
-        for (Object value : values.keySet()) {
-            warps.put(value.toString(), (Location) values.get(value));
+        try {
+            MemorySection section = (MemorySection) warpsconfig.getValues(false).get("warps");
+            Map<String, Object> values = section.getValues(false);
+            for (Object value : values.keySet()) {
+                warps.put(value.toString(), (Location) values.get(value));
+            }
+        } catch (ClassCastException ignored) {
         }
     }
 

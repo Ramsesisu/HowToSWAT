@@ -44,9 +44,9 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                 }
             }
 
-            int cooldownTime = 3;
+            double cooldownTime = 0.5;
             if (cooldowns.containsKey(player.getUniqueId())) {
-                long secondsLeft = cooldowns.get(player.getUniqueId()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
+                long secondsLeft = (long) (cooldowns.get(player.getUniqueId()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L);
                 if (secondsLeft > 0L)
                     return true;
             }
