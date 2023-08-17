@@ -2,7 +2,6 @@ package org.howtoswat.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,15 +49,15 @@ public class TeleportCommand implements CommandExecutor {
                             }
                         }
                     } else {
-                        player.sendMessage(PREFIX + "Der Spieler " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " wurde nicht gefunden!");
+                        player.sendMessage(PREFIX + "Der Spieler " + ChatColor.GOLD + args[1] + ChatColor.YELLOW + " wurde nicht gefunden!");
                     }
                 } else if (args.length > 3) {
                     Player from = Bukkit.getServer().getPlayer(args[0].replace("@s", player.getName()));
                     if (from != null) {
-                        double x = getCoord(player.getLocation().getX(), args[1]);
-                        double y = getCoord(player.getLocation().getY(), args[2]);
-                        double z = getCoord(player.getLocation().getZ(), args[3]);
-                        from.teleport(new Location(from.getWorld(), x, y, z));
+                        double x = getCoord(from.getLocation().getX(), args[1]);
+                        double y = getCoord(from.getLocation().getY(), args[2]);
+                        double z = getCoord(from.getLocation().getZ(), args[3]);
+                        from.teleport(from.getLocation().set(x, y, z));
 
                         player.sendMessage(PREFIX + ChatColor.GOLD + from.getName() + ChatColor.YELLOW + " wurde zu " + ChatColor.GOLD + (int) x + ChatColor.YELLOW + ", " + ChatColor.GOLD + (int) y + ChatColor.YELLOW + ", " + ChatColor.GOLD + (int) z + ChatColor.YELLOW + " teleportiert.");
                     } else {

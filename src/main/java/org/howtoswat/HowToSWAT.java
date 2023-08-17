@@ -179,5 +179,6 @@ public final class HowToSWAT extends JavaPlugin {
         pluginManager.registerEvents(new GrenadeHandler(), this);
         pluginManager.registerEvents(new CommandHandler(), this);
         pluginManager.registerEvents(new CarHandler(), this);
+        pluginManager.registerEvents(new TeleportHandler(), this);
     }
 }

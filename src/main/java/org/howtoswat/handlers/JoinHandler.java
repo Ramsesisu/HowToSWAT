@@ -101,19 +101,19 @@ public class JoinHandler implements Listener {
 
         BuildmodeCommand.buildmode.remove(player.getUniqueId());
 
-        if (playertasks.containsKey(player.getUniqueId())) {
-            if (playertasks.get(player.getUniqueId()) != null) {
-                for (BukkitTask task : playertasks.get(player.getUniqueId())) {
-                    task.cancel();
-                    playertasks.get(player.getUniqueId()).remove(task);
-                }
-            }
-        }
-
         if (CarCommand.minecarts.containsKey(player.getUniqueId())) {
             CarCommand.minecarts.remove(player.getUniqueId()).remove();
             if (CarCommand.cartasks.get(player.getUniqueId()) != null) {
                 CarCommand.cartasks.get(player.getUniqueId()).cancel();
+            }
+        }
+
+        if (playertasks.containsKey(player.getUniqueId())) {
+            if (!playertasks.get(player.getUniqueId()).isEmpty()) {
+                for (BukkitTask task : playertasks.get(player.getUniqueId())) {
+                    task.cancel();
+                    playertasks.get(player.getUniqueId()).remove(task);
+                }
             }
         }
     }
